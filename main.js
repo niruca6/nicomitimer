@@ -93,7 +93,7 @@ function checkDifference() {
   passedSeconds = (timerSt.startedTime - currentTime) / 1000;
   const difference = Math.floor(timerSt.remainingSeconds - passedSeconds) - timerSt.maxSeconds;
 
-  if (Math.abs(difference) > 2) {
+  if (Math.abs(difference) > 3) {
     timerSt.errorCount++;
     timerSt.remainingSeconds = timerSt.remainingSeconds - difference;
   }
@@ -105,7 +105,7 @@ function updateClockDisplay(minutesStr, secondsStr, realTimeSeconds) {
 
   const titleText = (minutesStr + ":" + secondsStr + " Left");
   timerEl.clock.innerHTML = clockText;
-  timerEl.title.innerHTML = (timerSt.errorCount > 1) ? ("⚠️"+titleText) : titleText;
+  timerEl.title.innerHTML = (timerSt.errorCount > 2) ? ("⚠️"+titleText) : titleText;
 
   if (timerSt.errorCount > 1) {
     alart.innerHTML = "Your timer is not working properly. Please refresh the page.";
