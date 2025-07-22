@@ -96,6 +96,8 @@ function checkDifference() {
   if (Math.abs(difference) > 3) {
     timerSt.errorCount++;
     timerSt.remainingSeconds = timerSt.remainingSeconds - difference;
+  } else {
+    if (timerSt.errorCount > 0) timerSt.errorCount--;
   }
 }
 
@@ -108,7 +110,7 @@ function updateClockDisplay(minutesStr, secondsStr, realTimeSeconds) {
   timerEl.title.innerHTML = (timerSt.errorCount > 2) ? ("⚠️"+titleText) : titleText;
 
   if (timerSt.errorCount > 1) {
-    alart.innerHTML = "Your timer is not working properly. Please refresh the page.";
+    alart.innerHTML = "Your timer is not working properly.\nPlease wait for a while or refresh the page.";
     tabIcon.href = "icon_red.ico";
   }
 
