@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title id="title">Timer</title>
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="icon" href="icon.ico" type="image/x-icon" id="icon">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap" rel="stylesheet">
+</head>
+
+<body id="body">
+  <p id="version" class="guide">v1 (Beta)</p>
+
+  <!--警告-->
+  <p id="alart"></p>
+
+
+  <!--時間-->
+  <p id="time" class="time">00:00</p>
+  <div id="time-bar" class="time-bar"></div>
+  <div class="space"></div>
+
+
+  <!--ショートカット-->
+  <div class="shortcuts" id="shortcuts">
+    <p id="shortcuts-label" class="guide">Quick start</p>
+    <button type=“button” onclick="start(180)" class="quick-start">3:00</button>
+    <button type=“button” onclick="start(300)" class="quick-start">5:00</button>
+    <button type=“button” onclick="start(420)" class="quick-start">7:00</button>
+    <button type=“button” onclick="start(600)" class="quick-start">10:00</button>
+    <button type=“button” onclick="start(720)" class="quick-start">12:00</button>
+    <button type=“button” onclick="start(900)" class="quick-start">15:00</button>
+    <button type=“button” onclick="start(1200)" class="quick-start">20:00</button>
+    <button type=“button” onclick="start(1500)" class="quick-start">25:00</button>
+    <button type=“button” onclick="start(1800)" class="quick-start">30:00</button>
+  </div>
+
+
+  <!--指定入力欄-->
+  <div class="input-custom-length" class="shortcuts" id="input-custom-length">
+    <p id="input-field-guide" class="guide">Enter a specified time here:</p>
+    <input class="align-right" type="number" id="minutes" name="minutes" placeholder="00" />
+    <p class="input-colon">:</p>
+    <input type="number" id="seconds" name="seconds" placeholder="00" maxlength="2" />
+  </div>
+
+
+  <!--オプション-->
+  <div class="volume-bar-div">
+    <input type="checkbox" id="auto-stop" name="auto-stop">
+    <label for="auto-stop" id="auto-stop-label">Stop timer automatically</label>
+
+    <br>
+
+    <input type="range" id="volume-bar" class="volume-bar" name="volume-bar" min="0" max="100" value="15" step="1"
+      list="markers" />
+    <label for="volume-bar" class="volume-bar-label" id="volume-bar-label">Volume: 15%</label>
+
+    <datalist id="markers">
+      <option value="15"></option>
+    </datalist>
+  </div>
+
+
+  <!--タイマー稼働時に表示されるUI-->
+  <div class="timer-menu">
+    <button type=“button” onclick="pause()" class="pause" id="pause">❙ ❙</button>
+    <button type=“button” onclick="reset()" class="reset" id="reset">✖︎</button><!--
+  --><button type=“button” onclick="resume()" class="resume" id="resume">▶︎</button><!--
+  --><button type=“button” onclick="startFromInput()" class="start" id="start">▶︎</button>
+  </div>
+
+
+  <script src="main.js"></script>
+</body>
+
+</html>
