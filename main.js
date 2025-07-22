@@ -108,7 +108,7 @@ function updateClockDisplay(minutesStr, secondsStr, realTimeSeconds) {
   timerEl.title.innerHTML = (timerSt.errorCount > 1) ? ("⚠️"+titleText) : titleText;
 
   if (timerSt.errorCount > 1) {
-    alart.innerHTML = "Your timer is lagging. Please reload.";
+    alart.innerHTML = "Your timer is not working properly. Please refresh the page.";
     tabIcon.href = "icon_red.ico";
   }
 
