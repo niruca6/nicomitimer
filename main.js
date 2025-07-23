@@ -29,21 +29,21 @@ const timerInputEl = {
 }
 
 
-let timerSt = {
+let tst = {
   isActivated: false,
   isAutoStopEnabled: false,
-  remainingSeconds: 0,
-  maxSeconds: 0,
-  startedTime: Date.now(),
-  errorCount: 0
+  startedTime: Date.now(), //ms
+  endTime: undefined, //ms
+  pausedTime: undefined, //ms
+  yellowTitleTime: 0,
+  beforeRemainingSeconds: 0
 }
-
 
 const alarm = new Audio("audio/alarm.m4a");
 alarm.volume = 1;
 
-
-setInterval(Timer, 1000);
+const worker = new Worker("./webWorker.js");
+setInterval(timer, 1000);
 setInterval(setVolume, 20);
 setInterval(setAutoStopMode, 20);
 
@@ -56,65 +56,62 @@ window.onload = ()=> {
 document.body.addEventListener(
   "keydown",
   () => {
-    if ((timerSt.remainingSeconds < 1) && (timerSt.isActivated)) reset();
+    if ((getRemainingSeconds() < 1) && (tst.isActivated)) reset();
   },
   { once: false }
 );
 
 
-//タイマーの処理
-function Timer() {
-  if (!timerSt.isActivated) {
-    if (timerSt.remainingSeconds > 0) timerSt.startedTime = timerSt.startedTime+1000;
-    return
-  };
 
-  timerSt.remainingSeconds--;
-  const realTimeSeconds = new Date().getSeconds();
+function timer() {
+  if(!tst.isActivated) return;
+const endTime = tst.endTime;
+worker.postMessage(endTime);
+}
 
+worker.onmessage = (ev)=> {
+  const remainingTime = ev.data;
 
-  if (timerSt.remainingSeconds > 0) {
-    const minutesStr = String(Math.floor(timerSt.remainingSeconds / 60)).padStart(2, '0');
-    const secondsStr = String(timerSt.remainingSeconds % 60).padStart(2, '0');
-
-    if ((timerSt.remainingSeconds % 5 == 0) && (timerSt.remainingSeconds > 0)) checkDifference();
-    updateClockDisplay(minutesStr, secondsStr, realTimeSeconds);
+  if (remainingTime > 0) {
+    updateClockDisplay(remainingTime);
+    tst.beforeRemainingSeconds = remainingTime;
 
     return; //残り時間が1秒以上ならここで終了
 
   } else {
-    playAlarm(realTimeSeconds);
+    playAlarm();
   }
 }
 
 
-function checkDifference() {
-  const currentTime = Date.now();
-  passedSeconds = (timerSt.startedTime - currentTime) / 1000;
-  const difference = Math.floor(timerSt.remainingSeconds - passedSeconds) - timerSt.maxSeconds;
+function updateClockDisplay(remainingTime) {
+  const minutesStr = String(Math.floor(remainingTime / 60)).padStart(2, '0');
+  const secondsStr = String(remainingTime % 60).padStart(2, '0');
+  const realTimeSeconds = new Date().getSeconds();
+  const diff = Math.abs(tst.beforeRemainingSeconds-getRemainingSeconds());
 
-  if (Math.abs(difference) > 3) {
-    timerSt.errorCount++;
-    timerSt.remainingSeconds = timerSt.remainingSeconds - difference;
-  } else {
-    if (timerSt.errorCount > 0) timerSt.errorCount--;
-  }
-}
-
-
-function updateClockDisplay(minutesStr, secondsStr, realTimeSeconds) {
   const clockText = minutesStr + "<span class='colon' id='colon'>:</span>" + secondsStr;
 
-  const titleText = (minutesStr + ":" + secondsStr + " Left");
+  const titleText = (minutesStr + ":" + secondsStr);
   timerEl.clock.innerHTML = clockText;
-  timerEl.title.innerHTML = (timerSt.errorCount > 2) ? ("⚠️"+titleText) : titleText;
 
-  if (timerSt.errorCount > 1) {
-    alart.innerHTML = "Your timer is not working properly.\nPlease wait for a while or refresh the page.";
-    tabIcon.href = "icon_red.ico";
+  if (diff > 3) {
+    tst.yellowTitleTime = 8
+    console.log("Restricted background activity: "+(diff-1)+"s")
+  };
+  if ((tst.yellowTitleTime > 0) && (remainingTime>0)) {
+    timerEl.title.innerHTML = (titleText+" [Activity resumed]");
+    if(tst.yellowTitleTime%2 == 0 ) {
+      tabIcon.href = "icon_yellow.ico";
+    } else {tabIcon.href = "icon.ico";}
+
+    tst.yellowTitleTime--;
+  } else {
+    timerEl.title.innerHTML = titleText+ " Left";
+    tabIcon.href = "icon.ico";
   }
 
-  timerEl.bar.style.width = ((timerSt.remainingSeconds / timerSt.maxSeconds) * 500) + "px";
+  timerEl.bar.style.width = (((Math.floor(getRemainingSeconds())) / tst.maxSeconds) * 500) + "px";
   const colon = document.getElementById("colon");
 
   if (realTimeSeconds % 2 == 0) {
@@ -125,7 +122,9 @@ function updateClockDisplay(minutesStr, secondsStr, realTimeSeconds) {
 }
 
 
-function playAlarm(realTimeSeconds) {
+function playAlarm() {
+  const realTimeSeconds = new Date().getSeconds();
+
   timerEl.clock.innerHTML = "00:00";
   timerEl.bar.style.width = "0px";
 
@@ -137,7 +136,7 @@ function playAlarm(realTimeSeconds) {
     tabIcon.href = "icon_magenta.ico";
 
     alarm.play();
-    if (timerSt.isAutoStopEnabled) reset();
+    if (tst.isAutoStopEnabled) reset();
 
   } else {
     body.style.backgroundColor = "#505050";
@@ -157,10 +156,11 @@ function playAlarm(realTimeSeconds) {
  * @param {number} timeLeft 
  */
 function start(timeLeft) {
-  timerSt.remainingSeconds = timeLeft;
-  timerSt.maxSeconds = timeLeft;
-  timerSt.isActivated = true;
-  timerSt.startedTime = Date.now();
+  tst.maxSeconds = timeLeft;
+  tst.beforeRemainingSeconds = timeLeft;
+  tst.isActivated = true;
+  tst.startedTime = Date.now();
+  tst.endTime = Date.now()+(timeLeft*1000);
 
   const minutesStr = String(Math.floor(timeLeft / 60));
   const secondsStr = String(timeLeft % 60).padStart(2, '0');
@@ -199,20 +199,23 @@ function startFromInput() {
 
 //一時停止
 function pause() {
-  timerSt.isActivated = false;
-  tabIcon.href = "icon_gray.ico";
+  tst.isActivated = false;
 
-  if (timerSt.remainingSeconds < 1) { //タイマーが鳴っていれば終了する
+  if (Math.floor((tst.endTime-Date.now())/1000) < 1) { //タイマーが鳴っていれば終了する
     reset();
     return;
   }
+
+  tst.pausedTime = Date.now();
+
+  tabIcon.href = "icon_gray.ico";
 
   timerEl.resumeButton.style.display = "inline-block";
   timerEl.resetButton.style.display = "inline-block";
   timerEl.pauseButton.style.display = "none";
 
-  const minutesStr = String(Math.floor(timerSt.remainingSeconds / 60)).padStart(2, '0');
-  const secondsStr = String(timerSt.remainingSeconds % 60).padStart(2, '0');
+  const minutesStr = String(Math.floor(getRemainingSeconds() / 60)).padStart(2, '0');
+  const secondsStr = String(getRemainingSeconds() % 60).padStart(2, '0');
   timerEl.title.innerHTML = minutesStr + ":" + secondsStr + " ■PAUSED■";
 }
 
@@ -220,20 +223,22 @@ function pause() {
 
 //再開
 function resume() {
-  timerSt.isActivated = true;
+  tst.isActivated = true;
   tabIcon.href = "icon.ico";
 
   timerEl.resumeButton.style.display = "none";
   timerEl.resetButton.style.display = "none";
   timerEl.pauseButton.style.display = "inline-block";
+
+  const now = Date.now();
+  tst.endTime+=((now-tst.pausedTime));
 }
 
 
 
 //タイマーを終了
 function reset() {
-  timerSt.isActivated = false;
-  timerSt.remainingSeconds = 0;
+  tst.isActivated = false;
 
   timerEl.title.innerHTML = "Timer";
   timerEl.clock.innerHTML = "00:00";
@@ -265,9 +270,9 @@ function reset() {
 //自動でタイマーを止める　を切り替える
 function setAutoStopMode() {
   if (timerEl.autoStopCheckbox.checked) {
-    timerSt.isAutoStopEnabled = true;
+    tst.isAutoStopEnabled = true;
   } else {
-    timerSt.isAutoStopEnabled = false;
+    tst.isAutoStopEnabled = false;
   }
 }
 
@@ -284,7 +289,6 @@ function setVolume() {
 
 //ガイドを非表示
 function hideGuide() {
-  console.log(timerEl.guide);
   setTimeout(() => {
     timerEl.guide.forEach(el => {
       el.style.color = "transparent";
@@ -295,4 +299,9 @@ function hideGuide() {
 
     });
   }, 10000);
+}
+
+
+function getRemainingSeconds() {
+  return Math.floor((tst.endTime-(Date.now()))/1000);
 }
