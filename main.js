@@ -97,7 +97,7 @@ function updateClockDisplay(remainingTime) {
 
   if (diff > 3) {
     tst.yellowTitleTime = 8
-    console.log("Restricted background activity: "+(diff-1)+"s")
+    console.log("["+getRealTimeStr()+"] Restricted background activity: "+(diff-1)+"s")
   };
   if ((tst.yellowTitleTime > 0) && (remainingTime>0)) {
     timerEl.title.innerHTML = (titleText+" [Activity resumed]");
@@ -181,6 +181,7 @@ function start(timeLeft) {
 
   timerEl.startButton.style.display = "none";
   timerEl.pauseButton.style.display = "inline-block";
+  console.log("["+getRealTimeStr()+"] started);
 }
 
 
@@ -304,4 +305,13 @@ function hideGuide() {
 
 function getRemainingSeconds() {
   return Math.floor((tst.endTime-(Date.now()))/1000);
+}
+
+
+
+function getRealTimeStr() {
+  const reakTime = new Date();
+  const minutesStr = String(Math.floor(realTime / 60)).padStart(2, '0');
+  const secondsStr = String(realTime % 60).padStart(2, '0');
+  return (minutesStr + ":" + secondsStr);
 }
