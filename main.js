@@ -32,9 +32,12 @@ const timerInputEl = {
 let tst = {
   isActivated: false,
   isAutoStopEnabled: false,
+  isFocused: true,
+
   startedTime: Date.now(), //ms
   endTime: undefined, //ms
   pausedTime: undefined, //ms
+
   yellowTitleTime: 0,
   beforeRemainingSeconds: 0
 }
@@ -43,10 +46,9 @@ const alarm = new Audio("audio/alarm.m4a");
 alarm.volume = 1;
 
 const worker = new Worker("./webWorker.js");
-setInterval(timer, 1000);
-setInterval(setVolume, 20);
-setInterval(setAutoStopMode, 20);
 
+setInterval(setVolume, 30);
+setInterval(setAutoStopMode, 30);
 
 window.onload = ()=> {
   hideGuide();
@@ -55,19 +57,19 @@ window.onload = ()=> {
 
 document.body.addEventListener(
   "keydown",
-  () => {
+  (ev) => {
     if ((getRemainingSeconds() < 1) && (tst.isActivated)) reset();
+    if ((!tst.isActivated) && (tst.endTime == undefined) && (ev.code == "Escape")) {
+      timerInputEl.minutes.value = null;
+      timerInputEl.seconds.value = null;
+    };
   },
   { once: false }
 );
 
 
 
-function timer() {
-  if(!tst.isActivated) return;
-const endTime = tst.endTime;
-worker.postMessage(endTime);
-}
+
 
 worker.onmessage = (ev)=> {
   const remainingTime = ev.data;
@@ -181,6 +183,8 @@ function start(timeLeft) {
 
   timerEl.startButton.style.display = "none";
   timerEl.pauseButton.style.display = "inline-block";
+
+  worker.postMessage([tst.endTime, true]);
   console.log("["+getRealTimeStr()+"] started");
 }
 
@@ -218,6 +222,8 @@ function pause() {
   const minutesStr = String(Math.floor(getRemainingSeconds() / 60)).padStart(2, '0');
   const secondsStr = String(getRemainingSeconds() % 60).padStart(2, '0');
   timerEl.title.innerHTML = minutesStr + ":" + secondsStr + " ■PAUSED■";
+
+  worker.postMessage([tst.endTime, false]);
 }
 
 
@@ -233,6 +239,8 @@ function resume() {
 
   const now = Date.now();
   tst.endTime+=((now-tst.pausedTime));
+
+   worker.postMessage([tst.endTime, true]);
 }
 
 
@@ -265,6 +273,10 @@ function reset() {
 
     timerEl.startButton.style.display = "inline-block";
   }, 1);
+
+  worker.postMessage([undefined, false]);
+  tst.endTime = undefined;
+  tst.startedTime = undefined;
 }
 
 
