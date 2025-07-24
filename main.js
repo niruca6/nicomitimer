@@ -310,7 +310,7 @@ function getRemainingSeconds() {
 
 
 function getRealTimeStr() {
-  const reakTime = new Date();
+  const realTime = new Date();
   const minutesStr = String(Math.floor(realTime / 60)).padStart(2, '0');
   const secondsStr = String(realTime % 60).padStart(2, '0');
   return (minutesStr + ":" + secondsStr);
