@@ -311,7 +311,8 @@ function getRemainingSeconds() {
 
 function getRealTimeStr() {
   const realTime = new Date();
-  const minutesStr = String(Math.floor(realTime / 60)).padStart(2, '0');
-  const secondsStr = String(realTime % 60).padStart(2, '0');
-  return (minutesStr + ":" + secondsStr);
+  const hoursStr = String(Math.floor(realTime.getHours())).padStart(2, '0');
+  const minutesStr = String(Math.floor(realTime.getMinutes())).padStart(2, '0');
+  const secondsStr = String(realTime.getSeconds()).padStart(2, '0');
+  return (hoursStr + ":" + minutesStr + ":" + secondsStr);
 }
