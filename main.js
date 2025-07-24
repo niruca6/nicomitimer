@@ -181,7 +181,7 @@ function start(timeLeft) {
 
   timerEl.startButton.style.display = "none";
   timerEl.pauseButton.style.display = "inline-block";
-  console.log("["+getRealTimeStr()+"] started);
+  console.log("["+getRealTimeStr()+"] started");
 }
 
 
