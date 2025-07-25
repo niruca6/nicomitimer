@@ -23,7 +23,7 @@ const timerEl = {
 
 
 const timerInputEl = {
-  field: document.getElementById("input-custom-length"),
+  field: document.getElementById("input-field"),
   minutes: document.getElementById("minutes"),
   seconds: document.getElementById("seconds")
 }
