@@ -17,7 +17,7 @@
 </head>
 
 <body id="body">
-  <p id="version" class="guide">(Beta 4)</p>
+  <p id="version" class="guide">(Beta 5)</p>
 
   <!--警告-->
   <p id="alart"></p>
@@ -26,7 +26,6 @@
   <!--時間-->
   <p id="time" class="time">00:00</p>
   <div id="time-bar" class="time-bar"></div>
-  <div class="space"></div>
 
 
   <!--ショートカット-->
@@ -46,7 +45,7 @@
 
   <!--指定入力欄-->
   <div class="input-custom-length" class="shortcuts" id="input-custom-length">
-    <!--<p id="input-field-guide" class="guide">Enter the time you want here:</p>-->
+    <p id="input-field-guide" class="guide">Enter a specific time here:</p>
     <input class="align-right" type="number" id="minutes" name="minutes" placeholder="00" />
     <p class="input-colon">:</p>
     <input type="number" id="seconds" name="seconds" placeholder="00" maxlength="2" />
@@ -54,7 +53,7 @@
 
 
   <!--オプション-->
-  <div class="volume-bar-div">
+  <div id="option">
     <input type="checkbox" id="auto-stop" name="auto-stop">
     <label for="auto-stop" id="auto-stop-label">Auto-stop timer</label>
 
@@ -71,7 +70,7 @@
 
 
   <!--タイマー稼働時に表示されるUI-->
-  <div class="timer-menu">
+  <div id="timer-menu">
     <button type=“button” onclick="pause()" class="pause" id="pause">❙ ❙</button>
     <button type=“button” onclick="reset()" class="reset" id="reset">✖︎</button><!--
   --><button type=“button” onclick="resume()" class="resume" id="resume">▶︎</button><!--
