@@ -56,10 +56,19 @@ button:hover {
 }
 
 
-.shortcuts {
+#shortcuts {
   transition: all 0.3s ease-out;
   display: flex;
 }
+#shortcuts-label {
+  position: absolute;
+  top: -5px;
+  left: 35px;
+
+  font-size: 16px;
+}
+
+
 
 
 #auto-stop {
@@ -74,12 +83,12 @@ button:hover {
 }
 
 
-.volume-bar-div {
+#option {
   position: absolute;
   bottom: 30px;
   left: 30px;
 }
-.volume-bar {
+#volume-bar {
   height: 30px;
   margin-top: 0px;
   width: 170px;
@@ -87,13 +96,19 @@ button:hover {
 
   filter: saturate(0%) contrast(70%);
 }
-.volume-bar-label {
+#volume-bar-label {
   float:right;
 }
 
 
+label {
+  color: #ffffffa3;
+}
 
-.timer-menu {
+
+
+
+#timer-menu {
   position: absolute;
   left: 50%;
   top: calc(50% + 110px);
@@ -103,39 +118,39 @@ button:hover {
 }
 
 
-.pause {
+#pause {
   display: none;
   font-size: 30px;
 }
 
 
-.resume {
+#resume {
   display: none;
   font-size: 30px;
 }
 
 
-.reset {
+#reset {
   display: none;
   font-size: 30px;
   color: white;
   margin-right: 30px;
   transition: all 0.3s ease-out;
 }
-.reset:hover {
+#reset:hover {
   color:rgb(255, 157, 157);
   border-bottom-color:rgb(255, 157, 157);
 }
 
 
-.start {
+#start {
   display: inline-block;
   font-size: 30px;
   transition: all 0.3s ease-out;
 }
 
 
-.input-custom-length {
+#input-custom-length {
   display: flex;
   justify-content: center;
   font-size: 150px;
@@ -147,7 +162,7 @@ button:hover {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.input-custom-length input {
+#input-custom-length input {
   background-color: transparent;
   color: white;
   font-size: 150px;
@@ -176,14 +191,17 @@ input:focus {
   margin-top: auto;
   transition: all 1s ease-out;
 }
+#input-field-guide {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-100px);
 
-
-label {
-  color: #ffffffa3;
+  font-size: 16px;
 }
 
 
-.time {
+#time {
   display: none;
   text-align: center;
   font-size: 150px;
@@ -199,7 +217,7 @@ label {
 }
 
 
-.time-bar {
+#time-bar {
   width: 0px;
   height: 1px;
   background-color: rgba(255, 255, 255, 0.4);
@@ -229,31 +247,33 @@ label {
 
 
 @media screen and (max-width: 768px) {
-  .shortcuts {
+  #shortcuts {
     display: flex-block;
     flex-wrap: wrap;
     overflow: visible;
   }
-  .shortcuts button {
+  #shortcuts button {
     font-size: 28px;
   }
 
-  .time, .input-custom-length input {
+  #time, #input-custom-length input {
     font-size: 100px;
+    width: 120px;
+    margin: 0;
   }
-  .input-custom-length .input-colon{
+  #input-custom-length .input-colon{
     font-size: 100px;
     transform: translateY(31px)
   }
 
-  .timer-menu {
+  #timer-menu {
     transform: translate(-50%, -30px);
   }
-  .timer-menu button {
+  #timer-menu button {
     font-size: 35px;
   }
 
-  .time-bar {
+  #time-bar {
     transform: translate(-50%, -30px);
   }
 
