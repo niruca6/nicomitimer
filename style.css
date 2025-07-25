@@ -59,14 +59,6 @@ button:hover {
 .shortcuts {
   transition: all 0.3s ease-out;
   display: flex;
-  overflow: scroll;
-}
-#shortcuts-label {
-  position: absolute;
-  top: -5px;
-  left: 35px;
-
-  font-size: 16px;
 }
 
 
@@ -74,6 +66,8 @@ button:hover {
   height: 24px;
   width: 24px;
   filter: saturate(0%) contrast(70%);
+
+  transition: all 0.3s ease-out;
 }
 #auto-stop-label {
   height: 14px;
@@ -88,6 +82,8 @@ button:hover {
 .volume-bar {
   height: 30px;
   margin-top: 0px;
+  width: 170px;
+  color: white;
 
   filter: saturate(0%) contrast(70%);
 }
@@ -101,7 +97,9 @@ button:hover {
   position: absolute;
   left: 50%;
   top: calc(50% + 110px);
-  transform: translateX(-50%);
+  transform: translate(-50%, 0);
+
+  transition: transform 1s ease-out;
 }
 
 
@@ -144,11 +142,12 @@ button:hover {
   letter-spacing: 0.05rem;
 
   position: absolute;
+  height: 180px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
-input {
+.input-custom-length input {
   background-color: transparent;
   color: white;
   font-size: 150px;
@@ -157,7 +156,7 @@ input {
   width: 280px;
   height: 180px;
 
-  margin-top: 146px;
+  margin-top: auto;
 
   border: none;
   transition: all 1s ease-out;
@@ -174,14 +173,8 @@ input:focus {
   font-size: 150px;
   font-family: 'Raleway';
   user-select: none;
-}
-#input-field-guide {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-100px);
-
-  font-size: 16px;
+  margin-top: auto;
+  transition: all 1s ease-out;
 }
 
 
@@ -213,7 +206,7 @@ label {
   position: absolute;
   left: 50%;
   top: calc(50% + 90px);
-  transform: translateX(-50%);
+  transform: translate(-50%, 0);
   transition: all 1s ease-out;
 }
 
@@ -228,18 +221,44 @@ label {
   right: 15px;
   bottom: 0px;
 
-  filter: opacity(25%);
+  filter: opacity(20%);
 }
 
 
 
 
 
-@media screen and (max-width: 700px) {
-  .shortcuts button, .quiet-mode {
-    font-size: 18px;
+@media screen and (max-width: 768px) {
+  .shortcuts {
+    display: flex-block;
+    flex-wrap: wrap;
+    overflow: visible;
   }
-  .time, input {
-    font-size: 120px;
+  .shortcuts button {
+    font-size: 28px;
+  }
+
+  .time, .input-custom-length input {
+    font-size: 100px;
+  }
+  .input-custom-length .input-colon{
+    font-size: 100px;
+    transform: translateY(31px)
+  }
+
+  .timer-menu {
+    transform: translate(-50%, -30px);
+  }
+  .timer-menu button {
+    font-size: 35px;
+  }
+
+  .time-bar {
+    transform: translate(-50%, -30px);
+  }
+
+  #auto-stop {
+  height: 30px;
+  width: 30px;
   }
 }
