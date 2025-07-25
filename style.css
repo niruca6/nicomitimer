@@ -150,7 +150,7 @@ label {
 }
 
 
-#input-custom-length {
+#input-field {
   display: flex;
   justify-content: center;
   font-size: 150px;
@@ -162,7 +162,7 @@ label {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-#input-custom-length input {
+#input-field input {
   background-color: transparent;
   color: white;
   font-size: 150px;
@@ -256,12 +256,14 @@ input:focus {
     font-size: 28px;
   }
 
-  #time, #input-custom-length input {
+  #time, #input-field input {
     font-size: 100px;
+  }
+  #input-field input {
     width: 120px;
     margin: 0;
   }
-  #input-custom-length .input-colon{
+  #input-field .input-colon{
     font-size: 100px;
     transform: translateY(31px)
   }
