@@ -1,6 +1,9 @@
 const body = document.getElementById("body");
 const tabIcon = document.getElementById("icon");
+const alarm = new Audio("audio/alarm.m4a");
+alarm.volume = 1;
 
+let windouWidth = window.innerWidth;
 
 const timerEl = {
   title: document.getElementById("title"),
@@ -33,24 +36,24 @@ let tst = {
   isActivated: false,
   isAutoStopEnabled: false,
   isFocused: true,
+  isAllowEnterToStart: true,
 
-  startedTime: Date.now(), //ms
+  startedTime: undefined, //ms
   endTime: undefined, //ms
   pausedTime: undefined, //ms
 
-  yellowTitleTime: 0,
+  yellowTitleTime: 0, //s
   beforeRemainingSeconds: 0
 }
 
-const alarm = new Audio("audio/alarm.m4a");
-alarm.volume = 1;
 
 const worker = new Worker("./webWorker.js");
 
 setInterval(setVolume, 30);
 setInterval(setAutoStopMode, 30);
+setInterval(() => { windouWidth = window.innerWidth }, 30);
 
-window.onload = ()=> {
+window.onload = () => {
   hideGuide();
 }
 
@@ -59,6 +62,15 @@ document.body.addEventListener(
   "keydown",
   (ev) => {
     if ((getRemainingSeconds() < 1) && (tst.isActivated)) reset();
+    if ((tst.isAllowEnterToStart) && (tst.endTime == undefined) && (ev.code == "Enter")) startFromInput();
+
+    //一時停止/再開[Space]
+    if (ev.code == "Space") {
+      if (tst.isActivated) { pause(); }
+      else if ((!tst.isActivated) && (tst.endTime)) { resume(); }
+    };
+
+    //入力消去[Esc]
     if ((!tst.isActivated) && (tst.endTime == undefined) && (ev.code == "Escape")) {
       timerInputEl.minutes.value = null;
       timerInputEl.seconds.value = null;
@@ -71,12 +83,13 @@ document.body.addEventListener(
 
 
 
-worker.onmessage = (ev)=> {
-  const remainingTime = ev.data;
+worker.onmessage = (ev) => {
+  const remainingSeconds = ev.data;
 
-  if (remainingTime > 0) {
-    updateClockDisplay(remainingTime);
-    tst.beforeRemainingSeconds = remainingTime;
+  if (remainingSeconds > 0) {
+    updateClockDisplay(remainingSeconds);
+
+    tst.beforeRemainingSeconds = remainingSeconds;
 
     return; //残り時間が1秒以上ならここで終了
 
@@ -86,34 +99,41 @@ worker.onmessage = (ev)=> {
 }
 
 
-function updateClockDisplay(remainingTime) {
-  const minutesStr = String(Math.floor(remainingTime / 60)).padStart(2, '0');
-  const secondsStr = String(remainingTime % 60).padStart(2, '0');
+function updateClockDisplay(remainingSeconds) {
+  const minutesStr = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
+  const secondsStr = String(remainingSeconds % 60).padStart(2, '0');
   const realTimeSeconds = new Date().getSeconds();
-  const diff = Math.abs(tst.beforeRemainingSeconds-getRemainingSeconds());
+  const diff = Math.abs(tst.beforeRemainingSeconds - getRemainingSeconds());
 
   const clockText = minutesStr + "<span class='colon' id='colon'>:</span>" + secondsStr;
-
   const titleText = (minutesStr + ":" + secondsStr);
+
   timerEl.clock.innerHTML = clockText;
 
   if (diff > 3) {
     tst.yellowTitleTime = 8
-    console.log("["+getRealTimeStr()+"] Restricted background activity: "+(diff-1)+"s")
+    console.log("[" + getRealTimeStr() + "] Restricted background activity: " + (diff - 1) + "s")
   };
-  if ((tst.yellowTitleTime > 0) && (remainingTime>0)) {
-    timerEl.title.innerHTML = (titleText+" [Activity resumed]");
-    if(tst.yellowTitleTime%2 == 0 ) {
+
+  if ((tst.yellowTitleTime > 0) && (remainingSeconds > 0)) {
+    timerEl.title.innerHTML = (titleText + " [Activity resumed]");
+
+    if (tst.yellowTitleTime % 2 == 0) {
       tabIcon.href = "icon_yellow.ico";
-    } else {tabIcon.href = "icon.ico";}
+
+    } else {
+      tabIcon.href = "icon.ico";
+    }
 
     tst.yellowTitleTime--;
   } else {
-    timerEl.title.innerHTML = titleText+ " Left";
+    timerEl.title.innerHTML = titleText + " Left";
     tabIcon.href = "icon.ico";
   }
 
   timerEl.bar.style.width = (((Math.floor(getRemainingSeconds())) / tst.maxSeconds) * 500) + "px";
+  if (windouWidth < 769) timerEl.bar.style.width = (((Math.floor(getRemainingSeconds())) / tst.maxSeconds) * 300) + "px";
+
   const colon = document.getElementById("colon");
 
   if (realTimeSeconds % 2 == 0) {
@@ -133,7 +153,7 @@ function playAlarm() {
   if (realTimeSeconds % 2 == 0) {
     body.style.backgroundColor = "white";
     timerEl.clock.style.filter = "invert(100%)";
-    timerEl.bar.style.filter = "invert(100%)";
+    timerEl.pauseButton.style.filter = "invert(100%)";
     timerEl.title.innerHTML = "■■■■■■■■■■■■■■■";
     tabIcon.href = "icon_magenta.ico";
 
@@ -143,7 +163,7 @@ function playAlarm() {
   } else {
     body.style.backgroundColor = "#505050";
     timerEl.clock.style.filter = "invert(0%)";
-    timerEl.bar.style.filter = "invert(0%)";
+    timerEl.pauseButton.style.filter = "invert(0%)";
     timerEl.title.innerHTML = "□□□□□□□□□□□□□□□";
     tabIcon.href = "icon.ico";
   }
@@ -161,14 +181,15 @@ function start(timeLeft) {
   tst.maxSeconds = timeLeft;
   tst.beforeRemainingSeconds = timeLeft;
   tst.isActivated = true;
+  tst.isAllowEnterToStart = false;
   tst.startedTime = Date.now();
-  tst.endTime = Date.now()+(timeLeft*1000);
+  tst.endTime = Date.now() + (timeLeft * 1000);
 
-  const minutesStr = String(Math.floor(timeLeft / 60));
+  const minutesStr = String(Math.floor(timeLeft / 60)).padStart(2, '0');
   const secondsStr = String(timeLeft % 60).padStart(2, '0');
 
-  timerEl.clock.innerHTML = minutesStr.padStart(2, '0') + ":" + secondsStr;
-  timerEl.title.innerHTML = minutesStr.padStart(2, '0') + ":" + secondsStr + " Left";
+  timerEl.clock.innerHTML = minutesStr + ":" + secondsStr;
+  timerEl.title.innerHTML = minutesStr + ":" + secondsStr + " Left";
   timerEl.bar.style.width = 500 + "px";
   timerEl.clock.style.display = "flex";
   timerInputEl.field.style.display = "none";
@@ -185,7 +206,7 @@ function start(timeLeft) {
   timerEl.pauseButton.style.display = "inline-block";
 
   worker.postMessage([tst.endTime, true]);
-  console.log("["+getRealTimeStr()+"] started");
+  console.log("[" + getRealTimeStr() + "] started\nlength: " + (getRemainingSeconds()));
 }
 
 
@@ -206,7 +227,7 @@ function startFromInput() {
 function pause() {
   tst.isActivated = false;
 
-  if (Math.floor((tst.endTime-Date.now())/1000) < 1) { //タイマーが鳴っていれば終了する
+  if (Math.floor((tst.endTime - Date.now()) / 1000) < 1) { //タイマーが鳴っていれば終了する
     reset();
     return;
   }
@@ -238,9 +259,9 @@ function resume() {
   timerEl.pauseButton.style.display = "inline-block";
 
   const now = Date.now();
-  tst.endTime+=((now-tst.pausedTime));
+  tst.endTime += ((now - tst.pausedTime));
 
-   worker.postMessage([tst.endTime, true]);
+  worker.postMessage([tst.endTime, true]);
 }
 
 
@@ -255,7 +276,6 @@ function reset() {
 
   body.style.backgroundColor = "#505050";
   timerEl.clock.style.filter = "invert(0%)";
-  timerEl.bar.style.filter = "invert(0%)";
   timerEl.quickStartDiv.style.display = "flex";
   tabIcon.href = "icon.ico";
 
@@ -277,6 +297,10 @@ function reset() {
   worker.postMessage([undefined, false]);
   tst.endTime = undefined;
   tst.startedTime = undefined;
+
+  setTimeout(() => {
+    tst.isAllowEnterToStart = true;
+  }, 100);
 }
 
 
@@ -315,12 +339,21 @@ function hideGuide() {
 }
 
 
+
+/**
+ * 
+ * @returns {number}
+ */
 function getRemainingSeconds() {
-  return Math.floor((tst.endTime-(Date.now()))/1000);
+  return Math.floor((tst.endTime - (Date.now())) / 1000);
 }
 
 
 
+/**
+ * 
+ * @returns {text}
+ */
 function getRealTimeStr() {
   const realTime = new Date();
   const hoursStr = String(Math.floor(realTime.getHours())).padStart(2, '0');
