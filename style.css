@@ -117,18 +117,16 @@ label {
   transition: transform 1s ease-out;
 }
 
-
 #pause {
   display: none;
   font-size: 30px;
+  transition: filter 1s ease-out, all 0.3s ease-out;
 }
-
 
 #resume {
   display: none;
   font-size: 30px;
 }
-
 
 #reset {
   display: none;
@@ -170,6 +168,7 @@ label {
 
   width: 280px;
   height: 180px;
+  max-width: 100%;
 
   margin-top: auto;
 
@@ -250,10 +249,6 @@ input:focus {
   #shortcuts {
     display: flex-block;
     flex-wrap: wrap;
-    overflow: visible;
-  }
-  #shortcuts button {
-    font-size: 28px;
   }
 
   #time, #input-field input {
@@ -262,14 +257,15 @@ input:focus {
   #input-field input {
     width: 120px;
     margin: 0;
+    overflow: hidden;
   }
   #input-field .input-colon{
     font-size: 100px;
-    transform: translateY(31px)
+    transform: translateY(31px);
   }
 
   #timer-menu {
-    transform: translate(-50%, -30px);
+    transform: translate(-50%, -36px);
   }
   #timer-menu button {
     font-size: 35px;
