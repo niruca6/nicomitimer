@@ -1,1 +1,1 @@
-# NicomiTimer v1(beta)
+# NicomiTimer
