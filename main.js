@@ -51,7 +51,7 @@ const worker = new Worker("./webWorker.js");
 
 setInterval(setVolume, 30);
 setInterval(setAutoStopMode, 30);
-setInterval(() => { windouWidth = window.innerWidth }, 30);
+setInterval(() => { windouWidth = window.innerWidth }, 60);
 
 window.onload = () => {
   hideGuide();
@@ -116,7 +116,7 @@ function updateClockDisplay(remainingSeconds) {
   };
 
   if ((tst.yellowTitleTime > 0) && (remainingSeconds > 0)) {
-    timerEl.title.innerHTML = (titleText + " [Activity resumed]");
+    timerEl.title.textContent = (titleText + " [Activity resumed]");
 
     if (tst.yellowTitleTime % 2 == 0) {
       tabIcon.href = "icon_yellow.ico";
@@ -127,7 +127,7 @@ function updateClockDisplay(remainingSeconds) {
 
     tst.yellowTitleTime--;
   } else {
-    timerEl.title.innerHTML = titleText + " Left";
+    timerEl.title.textContent = titleText + " Left";
     tabIcon.href = "icon.ico";
   }
 
@@ -147,14 +147,14 @@ function updateClockDisplay(remainingSeconds) {
 function playAlarm() {
   const realTimeSeconds = new Date().getSeconds();
 
-  timerEl.clock.innerHTML = "00:00";
+  timerEl.clock.textContent = "00:00";
   timerEl.bar.style.width = "0px";
 
   if (realTimeSeconds % 2 == 0) {
     body.style.backgroundColor = "white";
     timerEl.clock.style.filter = "invert(100%)";
     timerEl.pauseButton.style.filter = "invert(100%)";
-    timerEl.title.innerHTML = "■■■■■■■■■■■■■■■";
+    timerEl.title.textContent = "■■■■■■■■■■■■■■■";
     tabIcon.href = "icon_magenta.ico";
 
     alarm.play();
@@ -164,10 +164,18 @@ function playAlarm() {
     body.style.backgroundColor = "#505050";
     timerEl.clock.style.filter = "invert(0%)";
     timerEl.pauseButton.style.filter = "invert(0%)";
-    timerEl.title.innerHTML = "□□□□□□□□□□□□□□□";
+    timerEl.title.textContent = "□□□□□□□□□□□□□□□";
     tabIcon.href = "icon.ico";
   }
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -178,19 +186,21 @@ function playAlarm() {
  * @param {number} timeLeft 
  */
 function start(timeLeft) {
+  tst.startedTime = Date.now();
+  tst.endTime = Date.now() + (timeLeft * 1000) + 10; //postMessage以降の遅延対策のため終了時刻を0.01秒遅く設定
+  worker.postMessage([tst.endTime, true, false]);
+
   tst.maxSeconds = timeLeft;
   tst.beforeRemainingSeconds = timeLeft;
   tst.isActivated = true;
   tst.isAllowEnterToStart = false;
-  tst.startedTime = Date.now();
-  tst.endTime = Date.now() + (timeLeft * 1000);
 
   const minutesStr = String(Math.floor(timeLeft / 60)).padStart(2, '0');
   const secondsStr = String(timeLeft % 60).padStart(2, '0');
 
-  timerEl.clock.innerHTML = minutesStr + ":" + secondsStr;
-  timerEl.title.innerHTML = minutesStr + ":" + secondsStr + " Left";
-  timerEl.bar.style.width = 500 + "px";
+  timerEl.clock.textContent = minutesStr + ":" + secondsStr;
+  timerEl.title.textContent = minutesStr + ":" + secondsStr + " Left";
+  timerEl.bar.style.width = (windouWidth < 769) ? (300 + "px") : (500 + "px");
   timerEl.clock.style.display = "flex";
   timerInputEl.field.style.display = "none";
 
@@ -205,7 +215,6 @@ function start(timeLeft) {
   timerEl.startButton.style.display = "none";
   timerEl.pauseButton.style.display = "inline-block";
 
-  worker.postMessage([tst.endTime, true]);
   console.log("[" + getRealTimeStr() + "] started\nlength: " + (getRemainingSeconds()));
 }
 
@@ -226,6 +235,7 @@ function startFromInput() {
 //一時停止
 function pause() {
   tst.isActivated = false;
+  worker.postMessage([tst.endTime, false]);
 
   if (Math.floor((tst.endTime - Date.now()) / 1000) < 1) { //タイマーが鳴っていれば終了する
     reset();
@@ -242,9 +252,8 @@ function pause() {
 
   const minutesStr = String(Math.floor(getRemainingSeconds() / 60)).padStart(2, '0');
   const secondsStr = String(getRemainingSeconds() % 60).padStart(2, '0');
-  timerEl.title.innerHTML = minutesStr + ":" + secondsStr + " ■PAUSED■";
+  timerEl.title.textContent = minutesStr + ":" + secondsStr + " ■PAUSED■";
 
-  worker.postMessage([tst.endTime, false]);
 }
 
 
@@ -252,16 +261,24 @@ function pause() {
 //再開
 function resume() {
   tst.isActivated = true;
-  tabIcon.href = "icon.ico";
+  const now = Date.now();
+  tst.endTime += ((now - tst.pausedTime));
+  worker.postMessage([tst.endTime, true]);
 
+  setTimeout(() => {
+    updateClockDisplay(getRemainingSeconds());
+  }, getRemainingSeconds(true)%1000 +10);
+
+  const remainingSeconds = getRemainingSeconds();
+  const minutesStr = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
+  const secondsStr = String(remainingSeconds % 60).padStart(2, '0');
+
+  tabIcon.href = "icon.ico";
   timerEl.resumeButton.style.display = "none";
   timerEl.resetButton.style.display = "none";
   timerEl.pauseButton.style.display = "inline-block";
+  timerEl.title.textContent = (minutesStr + ":" + secondsStr);
 
-  const now = Date.now();
-  tst.endTime += ((now - tst.pausedTime));
-
-  worker.postMessage([tst.endTime, true]);
 }
 
 
@@ -269,9 +286,10 @@ function resume() {
 //タイマーを終了
 function reset() {
   tst.isActivated = false;
+  worker.postMessage([undefined, false, true]);
 
-  timerEl.title.innerHTML = "Timer";
-  timerEl.clock.innerHTML = "00:00";
+  timerEl.title.textContent = "Timer";
+  timerEl.clock.textContent = "00:00";
   timerEl.bar.style.width = "0px";
 
   body.style.backgroundColor = "#505050";
@@ -294,13 +312,13 @@ function reset() {
     timerEl.startButton.style.display = "inline-block";
   }, 1);
 
-  worker.postMessage([undefined, false]);
   tst.endTime = undefined;
   tst.startedTime = undefined;
 
   setTimeout(() => {
     tst.isAllowEnterToStart = true;
   }, 100);
+
 }
 
 
@@ -318,7 +336,7 @@ function setAutoStopMode() {
 //音量を変更する
 function setVolume() {
   const volume = timerEl.volumeBar.value;
-  timerEl.volumeBarLabel.innerHTML = ("Volume: " + volume + "%");
+  timerEl.volumeBarLabel.textContent = ("Volume: " + volume + "%");
   alarm.volume = volume * 0.01;
 }
 
@@ -339,25 +357,28 @@ function hideGuide() {
 }
 
 
-
 /**
  * 
  * @returns {number}
  */
-function getRemainingSeconds() {
+function getRemainingSeconds(includeMilliseconds) {
+  if(includeMilliseconds) {
+    return Math.floor((tst.endTime - (Date.now())) / 1000)+(((tst.endTime - (Date.now())) % 1000) *0.0001);
+  } else {
   return Math.floor((tst.endTime - (Date.now())) / 1000);
+  }
 }
-
 
 
 /**
  * 
  * @returns {text}
  */
-function getRealTimeStr() {
+function getRealTimeStr(includeMilliseconds) {
   const realTime = new Date();
   const hoursStr = String(Math.floor(realTime.getHours())).padStart(2, '0');
   const minutesStr = String(Math.floor(realTime.getMinutes())).padStart(2, '0');
   const secondsStr = String(realTime.getSeconds()).padStart(2, '0');
-  return (hoursStr + ":" + minutesStr + ":" + secondsStr);
+  if (includeMilliseconds) {return (hoursStr + ":" + minutesStr + ":" + secondsStr+"."+realTime.getMilliseconds());}
+  else {return (hoursStr + ":" + minutesStr + ":" + secondsStr);}
 }
