@@ -17,20 +17,21 @@
 </head>
 
 <body id="body">
-  <p id="version" class="guide">(Beta 5)</p>
+  <!--バージョン-->
+  <p id="version" class="guide">(Beta 6)</p>
+
 
   <!--警告-->
   <p id="alart"></p>
 
 
   <!--時間-->
-  <p id="time" class="time">00:00</p>
-  <div id="time-bar" class="time-bar"></div>
+  <p id="time">00:00</p>
+  <div id="time-bar"></div>
 
 
   <!--ショートカット-->
-  <div class="shortcuts" id="shortcuts">
-    <!--<p id="shortcuts-label" class="guide">Quick start</p>-->
+  <div id="shortcuts">
     <button type=“button” onclick="start(180)" class="quick-start">3:00</button>
     <button type=“button” onclick="start(300)" class="quick-start">5:00</button>
     <button type=“button” onclick="start(420)" class="quick-start">7:00</button>
@@ -44,7 +45,7 @@
 
 
   <!--指定入力欄-->
-  <div class="input-field" id="input-field">
+  <div id="input-field">
     <p id="input-field-guide" class="guide">Enter the time you want here:</p>
     <input class="align-right" type="number" id="minutes" name="minutes" placeholder="00" />
     <p class="input-colon">:</p>
@@ -61,7 +62,7 @@
 
     <input type="range" id="volume-bar" class="volume-bar" name="volume-bar" min="0" max="100" value="15" step="1"
       list="markers" />
-    <label for="volume-bar" class="volume-bar-label" id="volume-bar-label">Volume: 15%</label>
+    <label for="volume-bar" id="volume-bar-label">Volume: 15%</label>
 
     <datalist id="markers">
       <option value="15"></option>
@@ -71,10 +72,10 @@
 
   <!--タイマー稼働時に表示されるUI-->
   <div id="timer-menu">
-    <button type=“button” onclick="pause()" class="pause" id="pause">❙ ❙</button>
-    <button type=“button” onclick="reset()" class="reset" id="reset">✖︎</button><!--
-  --><button type=“button” onclick="resume()" class="resume" id="resume">▶︎</button><!--
-  --><button type=“button” onclick="startFromInput()" class="start" id="start">▶︎</button>
+    <button type=“button” onclick="pause()" id="pause">❙ ❙</button>
+    <button type=“button” onclick="reset()" id="reset">✖︎</button><!--
+  --><button type=“button” onclick="resume()" id="resume">▶︎</button><!--
+  --><button type=“button” onclick="startFromInput()" id="start">▶︎</button>
   </div>
 
 
