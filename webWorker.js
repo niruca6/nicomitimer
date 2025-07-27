@@ -1,18 +1,27 @@
 let endTime = undefined;
 let isActivated = false;
-setInterval(backgroundTimer, 1000);
+let backgroundTimer = undefined;
 
 
 self.onmessage = (ev) => {
   endTime = ev.data[0];
   isActivated = ev.data[1];
-}
+  const isReset = ev.data[2] ? ev.data[2] : false;
 
+  if (isReset) {
+    clearInterval(backgroundTimer);
+    backgroundTimer = null;
 
-function backgroundTimer() {
-  if(!isActivated) return;
-  const realTime = Date.now();
-  const remainingTime = Math.floor((endTime-realTime)/1000);
+  } else if (!backgroundTimer) {
 
-  self.postMessage(remainingTime);
+    backgroundTimer = setInterval(() => {
+
+      if (!isActivated) return;
+      const realTime = Date.now();
+      const remainingSeconds = Math.floor((endTime - realTime) / 1000);
+
+      self.postMessage(remainingSeconds);
+    }, 1000);
+
+  }
 }
