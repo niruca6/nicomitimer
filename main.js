@@ -49,6 +49,8 @@ let tst = {
 
 const worker = new Worker("./webWorker.js");
 
+
+
 setInterval(setVolume, 30);
 setInterval(setAutoStopMode, 30);
 setInterval(() => { windouWidth = window.innerWidth }, 60);
@@ -99,6 +101,8 @@ worker.onmessage = (ev) => {
 }
 
 
+
+
 function updateClockDisplay(remainingSeconds) {
   const minutesStr = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
   const secondsStr = String(remainingSeconds % 60).padStart(2, '0');
@@ -141,6 +145,7 @@ function updateClockDisplay(remainingSeconds) {
   } else {
     colon.style.color = "#ffffff98";
   }
+
 }
 
 
@@ -187,7 +192,7 @@ function playAlarm() {
  */
 function start(timeLeft) {
   tst.startedTime = Date.now();
-  tst.endTime = Date.now() + (timeLeft * 1000) + 10; //postMessage以降の遅延対策のため終了時刻を0.01秒遅く設定
+  tst.endTime = Date.now() + (timeLeft * 1000) + 50; //動作が遅れることを想定して終了時刻を0.05秒遅く設定
   worker.postMessage([tst.endTime, true, false]);
 
   tst.maxSeconds = timeLeft;
