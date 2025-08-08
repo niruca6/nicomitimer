@@ -159,6 +159,9 @@ label {
   font-size: 150px;
   font-family: 'Raleway';
 
+  margin: 0px;
+  padding: 0px;
+
   width: 280px;
   height: 180px;
   max-width: 100%;
@@ -231,7 +234,7 @@ input:focus {
   right: 15px;
   bottom: 0px;
 
-  filter: opacity(20%);
+  filter: opacity(25%);
 }
 
 
@@ -249,7 +252,6 @@ input:focus {
   }
   #input-field input {
     width: 120px;
-    margin: 0;
     overflow: hidden;
   }
   #input-field .input-colon{
