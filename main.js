@@ -364,6 +364,7 @@ function hideGuide() {
 
 
 
+
 /**
  * 
  * @returns {number}
