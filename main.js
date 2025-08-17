@@ -227,8 +227,6 @@ function start(timeLeft) {
 //指定入力された時間でタイマーを開始する
 function startFromInput() {
   const newTime = (parseFloat((timerInputEl.minutes.value * 60)) + parseFloat(timerInputEl.seconds.value));
-  console.log(timerInputEl.minutes.value+",　　　"+parseFloat((timerInputEl.minutes.value * 60)));
-  console.log(timerInputEl.seconds.value+",　　　"+parseFloat(timerInputEl.seconds.value));
   if (newTime == 0) {
     return;
   }
