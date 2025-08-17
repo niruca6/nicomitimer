@@ -1,6 +1,7 @@
 # NicomiTimer
-version: 1.0
-©︎ 2025 煮るか(Niruca), MIT License
+https://niruca6.github.io/nicomitimer/  
+version: 1.0  
+©︎ 2025 煮るか(Niruca), MIT License  
 Sound Effect: Sound Effect Lab
 
 
