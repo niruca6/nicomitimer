@@ -13,16 +13,18 @@ This is a Web timer based on concepted of "Easiest to use".
 
 ## 2.How to use
 ### 2-1.UI
-Buttons in the upper left are Quick Start. The timer starts instantly when you clicked it.
+Buttons in the upper left are Quick Start. The timer starts instantly when you clicked it.  
+The gray text in the center is input field. You can enter the time you want here and click [▶︎] to start.  
+[❙ ❙] to pause, [▶︎] to again. [✖︎] to end the timer.
 
 ### 2-2.Options
-Volume: Adjusts the volume of alarm. DON'T SET THE VOLUME ABOVE 20%. Otherwise, your ears will EXPLODE if you are using headphones.
+Volume: Adjusts the volume of alarm. DON'T SET THE VOLUME ABOVE 20%. Otherwise, your ears will EXPLODE if you are using headphones. 
 Auto-stop timer: Stop the timer automatically when the timer finished. The timer will only ring once.
 
 ### 2-3.Shortcut Keys
-Esc: Clear your inputs. It doesn't clear when the timer is activate.
-Space: Pause / Resume
-Enter: Start the timer from your input.
+Esc: Clear your inputs. It doesn't clear when the timer is activate.  
+Space: Pause / Resume 
+Enter: Start the timer from your input. 
 Any keys: Stop the ringing timer.
 
 ### 2-4.Other
