@@ -1,6 +1,6 @@
 const body = document.getElementById("body");
 const tabIcon = document.getElementById("icon");
-const alarm = new Audio("audio/alarm.m4a");
+const alarm = new Audio("assets/audio/alarm.m4a");
 alarm.volume = 1;
 
 let windouWidth = window.innerWidth;
@@ -9,7 +9,6 @@ const timerEl = {
   title: document.getElementById("title"),
   clock: document.getElementById("time"),
   bar: document.getElementById("time-bar"),
-  alart: document.getElementById("alart"),
   guide: document.querySelectorAll(".guide"),
 
   quickStartDiv: document.getElementById("shortcuts"),
@@ -36,7 +35,7 @@ let tst = {
   isActivated: false,
   isAutoStopEnabled: false,
   isFocused: true,
-  isAllowEnterToStart: true,
+  isAllowShortcutkey: true,
 
   startedTime: undefined, //ms
   endTime: undefined, //ms
@@ -64,11 +63,11 @@ document.body.addEventListener(
   "keydown",
   (ev) => {
     if ((getRemainingSeconds() < 1) && (tst.isActivated)) reset();
-    if ((tst.isAllowEnterToStart) && (tst.endTime == undefined) && (ev.code == "Enter")) startFromInput();
+    if ((tst.isAllowShortcutkey) && (tst.endTime == undefined) && (ev.code == "Enter")) startFromInput();
 
     //一時停止/再開[Space]
     if (ev.code == "Space") {
-      if (tst.isActivated) { pause(); }
+      if ((tst.isAllowShortcutkey) && (tst.isActivated)) { pause(); }
       else if ((!tst.isActivated) && (tst.endTime)) { resume(); }
     };
 
@@ -123,7 +122,7 @@ function updateClockDisplay(remainingSeconds) {
     timerEl.title.textContent = (titleText + " [Activity resumed]");
 
     if (tst.yellowTitleTime % 2 == 0) {
-      tabIcon.href = "icon_yellow.ico";
+      tabIcon.href = "icons/icon_yellow.ico";
 
     } else {
       tabIcon.href = "icon.ico";
@@ -160,7 +159,7 @@ function playAlarm() {
     timerEl.clock.style.filter = "invert(100%)";
     timerEl.pauseButton.style.filter = "invert(100%)";
     timerEl.title.textContent = "■■■■■■■■■■■■■■■";
-    tabIcon.href = "icon_magenta.ico";
+    tabIcon.href = "icons/icon_magenta.ico";
 
     alarm.play();
     if (tst.isAutoStopEnabled) reset();
@@ -198,7 +197,7 @@ function start(timeLeft) {
   tst.maxSeconds = timeLeft;
   tst.beforeRemainingSeconds = timeLeft;
   tst.isActivated = true;
-  tst.isAllowEnterToStart = false;
+  tst.isAllowShortcutkey = false;
 
   const minutesStr = String(Math.floor(timeLeft / 60)).padStart(2, '0');
   const secondsStr = String(timeLeft % 60).padStart(2, '0');
@@ -227,7 +226,9 @@ function start(timeLeft) {
 
 //指定入力された時間でタイマーを開始する
 function startFromInput() {
-  const newTime = ((Number(timerInputEl.minutes.value) * 60) + Number(timerInputEl.seconds.value));
+  const newTime = (parseFloat((timerInputEl.minutes.value * 60)) + parseFloat(timerInputEl.seconds.value));
+  console.log(timerInputEl.minutes.value+",　　　"+parseFloat((timerInputEl.minutes.value * 60)));
+  console.log(timerInputEl.seconds.value+",　　　"+parseFloat(timerInputEl.seconds.value));
   if (newTime == 0) {
     return;
   }
@@ -249,7 +250,7 @@ function pause() {
 
   tst.pausedTime = Date.now();
 
-  tabIcon.href = "icon_gray.ico";
+  tabIcon.href = "icons/icon_gray.ico";
 
   timerEl.resumeButton.style.display = "inline-block";
   timerEl.resetButton.style.display = "inline-block";
@@ -321,7 +322,7 @@ function reset() {
   tst.startedTime = undefined;
 
   setTimeout(() => {
-    tst.isAllowEnterToStart = true;
+    tst.isAllowShortcutkey = true;
   }, 100);
 
 }
@@ -350,6 +351,7 @@ function setVolume() {
 //ガイドを非表示
 function hideGuide() {
   setTimeout(() => {
+
     timerEl.guide.forEach(el => {
       el.style.color = "transparent";
 
@@ -360,6 +362,8 @@ function hideGuide() {
     });
   }, 10000);
 }
+
+
 
 
 /**
