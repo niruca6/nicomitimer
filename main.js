@@ -67,7 +67,7 @@ document.body.addEventListener(
 
     //一時停止/再開[Space]
     if (ev.code == "Space") {
-      if ((tst.isAllowShortcutkey) && (tst.isActivated)) { pause(); }
+      if ((!tst.isAllowShortcutkey) && (tst.isActivated)) { pause(); }
       else if ((!tst.isActivated) && (tst.endTime)) { resume(); }
     };
 
