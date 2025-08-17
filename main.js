@@ -292,7 +292,7 @@ function reset() {
   tst.isActivated = false;
   worker.postMessage([undefined, false, true]);
 
-  timerEl.title.textContent = "Timer";
+  timerEl.title.textContent = "NicomiTimer";
   timerEl.clock.textContent = "00:00";
   timerEl.bar.style.width = "0px";
 
