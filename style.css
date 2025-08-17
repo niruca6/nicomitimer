@@ -28,14 +28,6 @@ body {
 }
 
 
-#alart {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-160px);
-}
-
-
 button {
   background-color: transparent;
   color: white;
@@ -232,12 +224,23 @@ input:focus {
 }
 
 
-#version {
-  position: absolute;
-  right: 15px;
-  bottom: 0px;
 
-  filter: opacity(25%);
+#copyright {
+  position: absolute;
+  bottom: 5px;
+  right: 15px;
+  transform: translate(0px, -3px);
+
+  font-size: 12px;
+  text-decoration: none;
+  color: white;
+  opacity: 20%;
+
+  transition: all 0.2s ease-in-out;
+}
+#copyright:hover {
+  color: aqua;
+  opacity: 100%;
 }
 
 
