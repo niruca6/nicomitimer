@@ -281,7 +281,7 @@ function resume() {
   timerEl.resumeButton.style.display = "none";
   timerEl.resetButton.style.display = "none";
   timerEl.pauseButton.style.display = "inline-block";
-  timerEl.title.textContent = (minutesStr + ":" + secondsStr);
+  timerEl.title.textContent = (minutesStr + ":" + secondsStr + " Left");
 
 }
 
