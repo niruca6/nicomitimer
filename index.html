@@ -1,283 +1,82 @@
-body {
-  background-color: #505050;
-  color: #ffffff;
-  margin-left: 30px;
-  margin-top: 30px;
-  transition: all 1s ease-out;
-  
+<!DOCTYPE html>
+<html lang="en">
 
-  font-family: "Raleway", "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif;
-  font-weight: 100;
-  font-style: normal;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  font-size: 18px;
-  letter-spacing: 0.05em;
-}
+  <title id="title">NicomiTimer</title>
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="icon" href="icon.ico" type="image/x-icon" id="icon">
 
 
-.align-right {
-  text-align: right;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap" rel="stylesheet">
+</head>
+
+<body id="body">
+  <!--バージョンとコピーライト-->
+  <p id="version" class="guide"></p>
+  <a id="copyright" href="https://github.com/niruca6/NicomiTimer" target="_blank" rel="noopener noreferrer">Beta 8 | © 2025 Niruca, MIT License</a>
 
 
-.guide {
-  filter: opacity(70%);
-  font-size: 16px;
-
-  transition: all 1.5s ease-out;
-}
+  <!--時間-->
+  <p id="time">00:00</p>
+  <div id="time-bar"></div>
 
 
-button {
-  background-color: transparent;
-  color: white;
-  font-size: 26px;
-  letter-spacing: 0.01rem;
-
-  border-width: 1px;
-  border-spacing: 5px;
-  border-color: transparent;
-  border-style:dotted;
-  font-family: "Raleway";
-  font-weight: lighter;
-
-  padding-block: 1px;
-  padding-inline: 6px;
-
-  transition: all 0.3s ease-out;
-}
-button:hover {
-  border-bottom-color: white;
-}
+  <!--ショートカット-->
+  <div id="shortcuts">
+    <button type=“button” onclick="start(180)" class="quick-start">3:00</button>
+    <button type=“button” onclick="start(300)" class="quick-start">5:00</button>
+    <button type=“button” onclick="start(420)" class="quick-start">7:00</button>
+    <button type=“button” onclick="start(600)" class="quick-start">10:00</button>
+    <button type=“button” onclick="start(720)" class="quick-start">12:00</button>
+    <button type=“button” onclick="start(900)" class="quick-start">15:00</button>
+    <button type=“button” onclick="start(1200)" class="quick-start">20:00</button>
+    <button type=“button” onclick="start(1500)" class="quick-start">25:00</button>
+    <button type=“button” onclick="start(1800)" class="quick-start">30:00</button>
+  </div>
 
 
-#shortcuts {
-  transition: all 0.3s ease-out;
-  display: flex;
-}
+  <!--指定入力欄-->
+  <div id="input-field">
+    <p id="input-field-guide" class="guide">Enter the time you want here:</p>
+    <input class="align-right" type="number" id="minutes" name="minutes" placeholder="00" />
+    <p class="input-colon">:</p>
+    <input type="number" id="seconds" name="seconds" placeholder="00" maxlength="2" />
+  </div>
 
 
+  <!--オプション-->
+  <div id="option">
+    <input type="checkbox" id="auto-stop" name="auto-stop">
+    <label for="auto-stop" id="auto-stop-label">Auto-stop timer</label>
+
+    <br>
+
+    <input type="range" id="volume-bar" class="volume-bar" name="volume-bar" min="0" max="100" value="10" step="1"
+      list="markers" />
+    <label for="volume-bar" id="volume-bar-label">Volume: 10%</label>
+
+    <datalist id="markers">
+      <option value="10"></option>
+    </datalist>
+  </div>
 
 
-#auto-stop {
-  height: 24px;
-  width: 24px;
-  filter: saturate(0%) contrast(70%);
-
-  transition: all 0.3s ease-out;
-}
-#auto-stop-label {
-  height: 14px;
-}
+  <!--タイマー稼働時に表示されるUI-->
+  <div id="timer-menu">
+    <button type=“button” onclick="pause()" id="pause">❙ ❙</button>
+    <button type=“button” onclick="reset()" id="reset">✖︎</button><!--
+  --><button type=“button” onclick="resume()" id="resume">▶︎</button><!--
+  --><button type=“button” onclick="startFromInput()" id="start">▶︎</button>
+  </div>
 
 
-#option {
-  position: absolute;
-  bottom: 30px;
-  left: 30px;
-}
-#volume-bar {
-  height: 30px;
-  margin-top: 0px;
-  width: 170px;
-  color: white;
+  <script src="main.js"></script>
+</body>
 
-  filter: saturate(0%) contrast(70%);
-}
-#volume-bar-label {
-  float:right;
-}
-
-
-label {
-  color: #ffffffa3;
-}
-
-
-
-
-#timer-menu {
-  position: absolute;
-  left: 50%;
-  top: calc(50% + 110px);
-  transform: translate(-50%, 0);
-
-  transition: transform 1s ease-out;
-}
-
-#pause {
-  display: none;
-  font-size: 30px;
-  transition: filter 1s ease-out, all 0.3s ease-out;
-}
-
-#resume {
-  display: none;
-  font-size: 30px;
-}
-
-#reset {
-  display: none;
-  font-size: 30px;
-  color: white;
-  margin-right: 30px;
-  transition: all 0.3s ease-out;
-}
-#reset:hover {
-  color:rgb(255, 157, 157);
-  border-bottom-color:rgb(255, 157, 157);
-}
-
-
-#start {
-  display: inline-block;
-  font-size: 30px;
-  transition: all 0.3s ease-out;
-}
-
-
-#input-field {
-  display: flex;
-  justify-content: center;
-  font-size: 150px;
-  letter-spacing: 0.05rem;
-
-  position: absolute;
-  height: 180px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-#input-field input {
-  background-color: transparent;
-  color: white;
-  font-size: 150px;
-  font-family: 'Raleway';
-
-  margin: 0px;
-  padding: 0px;
-
-  width: 280px;
-  height: 180px;
-  max-width: 100%;
-
-  margin-top: auto;
-
-  border: none;
-  transition: all 1s ease-out;
-}
-input::-webkit-inner-spin-button, input::-webkit-outer-spin-button {
-  display: none;
-}
-input:focus {
-  outline: none;
-  text-decoration: none;
-  caret-color: rgba(255, 255, 255, 0.8);
-}
-.input-colon {
-  font-size: 150px;
-  font-family: 'Raleway';
-  user-select: none;
-  margin-top: auto;
-  transition: all 1s ease-out;
-}
-#input-field-guide {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-100px);
-
-  font-size: 16px;
-}
-
-
-#time {
-  display: none;
-  text-align: center;
-  font-size: 150px;
-  letter-spacing: 0.05rem;
-
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -135%);
-  font-family: 'Raleway';
-  transition: all 1s ease-out;
-  filter: invert(0%);
-}
-
-
-#time-bar {
-  width: 0px;
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.4);
-  position: absolute;
-  left: 50%;
-  top: calc(50% + 90px);
-  transform: translate(-50%, 0);
-  transition: all 1s ease-out;
-}
-
-
-.colon {
-  transition: all 0.8s ease-out;
-}
-
-
-
-#copyright {
-  position: absolute;
-  bottom: 5px;
-  right: 15px;
-  transform: translate(0px, -3px);
-
-  font-size: 12px;
-  text-decoration: none;
-  color: white;
-  opacity: 20%;
-
-  transition: all 0.2s ease-in-out;
-}
-#copyright:hover {
-  color: aqua;
-  opacity: 100%;
-}
-
-
-
-
-
-@media screen and (max-width: 768px) {
-  #shortcuts {
-    display: flex-block;
-    flex-wrap: wrap;
-  }
-
-  #time, #input-field input {
-    font-size: 100px;
-  }
-  #input-field input {
-    width: 120px;
-    overflow: hidden;
-  }
-  #input-field .input-colon{
-    font-size: 100px;
-    transform: translateY(31px);
-  }
-
-  #timer-menu {
-    transform: translate(-50%, -36px);
-  }
-  #timer-menu button {
-    font-size: 35px;
-  }
-
-  #time-bar {
-    transform: translate(-50%, -30px);
-  }
-
-  #auto-stop {
-  height: 30px;
-  width: 30px;
-  }
-}
+</html>
