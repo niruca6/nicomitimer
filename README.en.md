@@ -25,7 +25,7 @@ The gray text in the center is input field. You can enter the time you want here
 ### 2-3. Shortcut Keys
 - Esc: Clears your inputs. (Doesn't reset while the timer is running.)  
 - Space: Pauses / Resumes the timer. 
-- Enter: Starts the timer with the entered time. 
+- Enter: Starts the timer with the inputed time. 
 - Any keys: Stops the alarm while it is ringing.
 
 ### 2-4. Other
