@@ -14,9 +14,9 @@ This is a Web timer based on the concept of being "the easiest to use."
 
 ## 2.How to use
 ### 2-1. UI
-Buttons in the upper left are Quick Start. The timer starts instantly when you clicked it.  
-The gray text in the center is input field. You can enter the time you want here and click [▶︎] to start.  
-[❙ ❙] to pause, [▶︎] to again. [✖︎] to end the timer.
+The buttons in the upper left are Quick Start. The timer starts instantly when you click it.  
+The gray text in the center is the input field. Enter the time you want here and click [▶︎] (or Enter) to start.  
+Click [❙ ❙] to pause, [▶︎] to resume, and [✖︎] to cancel the timer.
 
 ### 2-2. Options
 - Volume: Adjusts the volume of alarm. Please DON'T set the volume above 20%. The too loud sounds may damage your hearing.
