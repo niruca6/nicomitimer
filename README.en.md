@@ -8,28 +8,28 @@ Sound Effect: Sound Effect Lab
 
 -------------------------------
 ## 1.About this website
-This is a Web timer based on concepted of "Easiest to use".
+This is a Web timer based on the concept of being "the easiest to use."
 
 
 
 ## 2.How to use
-### 2-1.UI
+### 2-1. UI
 Buttons in the upper left are Quick Start. The timer starts instantly when you clicked it.  
 The gray text in the center is input field. You can enter the time you want here and click [▶︎] to start.  
 [❙ ❙] to pause, [▶︎] to again. [✖︎] to end the timer.
 
-### 2-2.Options
-Volume: Adjusts the volume of alarm. DON'T SET THE VOLUME ABOVE 20%. Otherwise, your ears will EXPLODE if you are using headphones. 
-Auto-stop timer: Stop the timer automatically when the timer finished. The timer will only ring once.
+### 2-2. Options
+- Volume: Adjusts the volume of alarm. Please DON'T set the volume above 20%. The too loud sounds may damage your hearing.
+- Auto-stop timer: Stop the timer automatically when it finishes. The alarm will ring only once.
 
-### 2-3.Shortcut Keys
-Esc: Clear your inputs. It doesn't clear when the timer is activate.  
-Space: Pause / Resume 
-Enter: Start the timer from your input. 
-Any keys: Stop the ringing timer.
+### 2-3. Shortcut Keys
+- Esc: Clears your inputs. (Doesn't reset while the timer is running.)  
+- Space: Pauses / Resumes the timer. 
+- Enter: Starts the timer with the entered time. 
+- Any keys: Stops the ringing timer.
 
-### 2-4.Other
-If you are using Windows or Mac, the timer can run even if you are browsing other websites or apps. If you are using else, for example, iPhone or Android, the timer will paused when you are browsing other websites or apps, but the timer will resume in correct time when you backed to the website.
+### 2-4. Other
+On PC devices, the timer continues running even when you switch to another website or app. On mobile devices, the timer will pause if leave the site or switch to another app, but the timer will resume correctly when you return to the site.
 
 
 
