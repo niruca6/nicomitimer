@@ -26,7 +26,7 @@ The gray text in the center is input field. You can enter the time you want here
 - Esc: Clears your inputs. (Doesn't reset while the timer is running.)  
 - Space: Pauses / Resumes the timer. 
 - Enter: Starts the timer with the entered time. 
-- Any keys: Stops the ringing timer.
+- Any keys: Stops the alarm while it is ringing.
 
 ### 2-4. Other
 On PC devices, the timer continues running even when you switch to another website or app. On mobile devices, the timer will pause if leave the site or switch to another app, but the timer will resume correctly when you return to the site.
