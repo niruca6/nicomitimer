@@ -326,7 +326,7 @@ function reset() {
 }
 
 
-//自動でタイマーを止める　を切り替える
+//自動でタイマーを止める を切り替える
 function setAutoStopMode() {
   if (timerEl.autoStopCheckbox.checked) {
     tst.isAutoStopEnabled = true;
