@@ -64,7 +64,7 @@ document.body.addEventListener(
   "keydown",
   (ev) => {
     if ((getRemainingSeconds() < 1) && (tst.isActivated)) reset();
-    if ((tst.isAllowShortcutkey) && (tst.endTime == undefined) && (ev.code == "Enter")) startFromInput();
+    if ((tst.isAllowShortcutkey) && (tst.endTime == undefined) && (ev.code == "Enter")) startWithInput();
 
     //一時停止/再開[Space]
     if (ev.code == "Space") {
