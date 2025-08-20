@@ -234,7 +234,7 @@ input:focus {
   font-size: 12px;
   text-decoration: none;
   color: white;
-  opacity: 20%;
+  opacity: 25%;
 
   transition: all 0.2s ease-in-out;
 }
