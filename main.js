@@ -40,6 +40,7 @@ let tst = {
   startedTime: undefined, //ms
   endTime: undefined, //ms
   pausedTime: undefined, //ms
+  ringCount: 0,
 
   yellowTitleTime: 0, //s
   beforeRemainingSeconds: 0
@@ -67,6 +68,7 @@ document.body.addEventListener(
 
     //一時停止/再開[Space]
     if (ev.code == "Space") {
+      console.log("Space");
       if ((!tst.isAllowShortcutkey) && (tst.isActivated)) { pause(); }
       else if ((!tst.isActivated) && (tst.endTime)) { resume(); }
     };
@@ -89,9 +91,7 @@ worker.onmessage = (ev) => {
 
   if (remainingSeconds > 0) {
     updateClockDisplay(remainingSeconds);
-
     tst.beforeRemainingSeconds = remainingSeconds;
-
     return; //残り時間が1秒以上ならここで終了
 
   } else {
@@ -114,9 +114,9 @@ function updateClockDisplay(remainingSeconds) {
   timerEl.clock.innerHTML = clockText;
 
   if (diff > 3) {
-    tst.yellowTitleTime = 8
-    console.log("[" + getRealTimeStr() + "] Restricted background activity: " + (diff - 1) + "s")
-  };
+    tst.yellowTitleTime = 8;
+    console.log("[" + getRealTimeStr() + "] Restricted background activity: " + (diff - 1) + "s");
+  }
 
   if ((tst.yellowTitleTime > 0) && (remainingSeconds > 0)) {
     timerEl.title.textContent = (titleText + " [Activity resumed]");
@@ -149,12 +149,12 @@ function updateClockDisplay(remainingSeconds) {
 
 
 function playAlarm() {
-  const realTimeSeconds = new Date().getSeconds();
+  tst.ringCount++;
 
   timerEl.clock.textContent = "00:00";
   timerEl.bar.style.width = "0px";
 
-  if (realTimeSeconds % 2 == 0) {
+  if (tst.ringCount % 2 == 0) {
     body.style.backgroundColor = "white";
     timerEl.clock.style.filter = "invert(100%)";
     timerEl.pauseButton.style.filter = "invert(100%)";
@@ -168,7 +168,7 @@ function playAlarm() {
     body.style.backgroundColor = "#505050";
     timerEl.clock.style.filter = "invert(0%)";
     timerEl.pauseButton.style.filter = "invert(0%)";
-    timerEl.title.textContent = "□□□□□□□□□□□□□□□";
+    timerEl.title.textContent = getRemainingSeconds() < 0 ? "□□□□□□□□□□□□□□□" : "00:00 Left";
     tabIcon.href = "icon.ico";
   }
 }
@@ -360,7 +360,6 @@ function hideGuide() {
     });
   }, 10000);
 }
-
 
 
 
