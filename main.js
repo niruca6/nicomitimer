@@ -2,7 +2,7 @@ const body = document.getElementById("body");
 const tabIcon = document.getElementById("icon");
 const alarm = new Audio("assets/audio/alarm.m4a");
 alarm.volume = 1;
-
+const worker = new Worker("./webWorker.js");
 let windouWidth = window.innerWidth;
 
 const timerEl = {
@@ -47,17 +47,7 @@ let tst = {
 }
 
 
-const worker = new Worker("./webWorker.js");
 
-
-
-setInterval(setVolume, 30);
-setInterval(setAutoStopMode, 30);
-setInterval(() => { windouWidth = window.innerWidth }, 60);
-
-window.onload = () => {
-  hideGuide();
-}
 
 
 document.body.addEventListener(
@@ -83,6 +73,12 @@ document.body.addEventListener(
 );
 
 
+
+window.onload = () => {hideGuide();}
+
+setInterval(setVolume, 30);
+setInterval(setAutoStopMode, 30);
+setInterval(() => { windouWidth = window.innerWidth }, 60);
 
 
 
