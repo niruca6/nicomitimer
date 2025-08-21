@@ -290,6 +290,7 @@ function resume() {
 //タイマーを終了
 function reset() {
   tst.isActivated = false;
+  tst.ringCount = 0;
   worker.postMessage([undefined, false, true]);
 
   timerEl.title.textContent = "NicomiTimer";
