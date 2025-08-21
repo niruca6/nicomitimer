@@ -108,7 +108,6 @@ label {
 #pause {
   display: none;
   font-size: 30px;
-  transition: filter 1s ease-out, all 0.3s ease-out;
 }
 
 #resume {
