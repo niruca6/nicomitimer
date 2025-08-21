@@ -205,6 +205,9 @@ input:focus {
   transition: all 1s ease-out;
   filter: invert(0%);
 }
+.colon {
+  transition: all 0.8s ease-out;
+}
 
 
 #time-bar {
@@ -216,11 +219,6 @@ input:focus {
   top: calc(50% + 90px);
   transform: translate(-50%, 0);
   transition: all 1s ease-out;
-}
-
-
-.colon {
-  transition: all 0.8s ease-out;
 }
 
 
@@ -257,7 +255,7 @@ input:focus {
     font-size: 100px;
   }
   #input-field input {
-    width: 120px;
+    width: 180px;
     overflow: hidden;
   }
   #input-field .input-colon{
