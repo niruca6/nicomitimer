@@ -1,6 +1,6 @@
 # NicomiTimer
 https://niruca6.github.io/nicomitimer/  
-version: Beta 8  
+version: v1
 ©︎ 2025 煮るか(Niruca), MIT License  
 音源: 効果音ラボ  
   
