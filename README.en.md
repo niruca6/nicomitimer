@@ -28,8 +28,11 @@ Click [❙ ❙] to pause, [▶︎] to resume, and [✖︎] to cancel the timer.
 - Enter: Starts the timer with the inputed time. 
 - Any keys: Stops the alarm while it is ringing.
 
-### 2-4. Other
-On PC devices, the timer continues running even when you switch to another website or app. On mobile devices, the timer will pause if leave the site or switch to another app, but the timer will resume correctly when you return to the site.
+### 2-4. Recommended Environment, Other
+- Recommended OS: MacOS, Windows(Although iOS and Android can run the timer, it will pause if you leave the tab.)  
+- Recommended Browser: Google Chrome(Safari is not recommended. Other browsers have not been tested.)  
+On Chrome for PC, the timer continues running even when you switch to another website or application.  
+On mobile devices, the timer will pause if you leave the tab or switch to another application, but the timer will resume correctly when you return to the site.  
 
 
 
