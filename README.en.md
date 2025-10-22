@@ -1,6 +1,5 @@
 # NicomiTimer
-https://niruca6.github.io/nicomitimer/  
-version: 1  
+version: 1.1.0  
 ©︎ 2025 煮るか(Niruca), MIT License  
 Sound Effect: Sound Effect Lab
 
@@ -18,15 +17,17 @@ The buttons in the upper left are Quick Start. The timer starts instantly when y
 The gray text in the center is the input field. Enter the time you want here and click [▶︎] (or Enter) to start.  
 Click [❙ ❙] to pause, [▶︎] to resume, and [✖︎] to cancel the timer.
 
-### 2-2. Options
+### 2-2. Preferences
 - Volume: Adjusts the volume of alarm. Please DON'T set the volume above 20%. The too loud sounds may damage your hearing.
 - Auto-stop timer: Stop the timer automatically when it finishes. The alarm will ring only once.
+- (🔔Bell icon): Toggles mute. A bell with a slash means the alarm is muted.
 
-### 2-3. Key Controlls
-- Esc: Clears your inputs. (Doesn't reset while the timer is running.)  
+### 2-3. Key Controls
+- Esc: Clears your inputs.  
 - Space: Pauses / Resumes the timer. 
 - Enter: Starts the timer with the inputed time. 
-- Any keys: Stops the alarm while it is ringing.
+- M: Toggles mute.
+- Any key: Stops the alarm while it is ringing. This action takes precedence over other controls and does not overlap.
 
 ### 2-4. Recommended Environment, Other
 - Recommended OS: MacOS, Windows(Although iOS and Android can run the timer, it will pause if you leave the tab.)  

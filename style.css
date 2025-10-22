@@ -4,7 +4,7 @@ body {
   margin-left: 30px;
   margin-top: 30px;
   transition: all 1s ease-out;
-  
+
 
   font-family: "Raleway", "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif;
   font-weight: 100;
@@ -12,6 +12,11 @@ body {
 
   font-size: 18px;
   letter-spacing: 0.05em;
+}
+
+img {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 
@@ -37,7 +42,7 @@ button {
   border-width: 1px;
   border-spacing: 5px;
   border-color: transparent;
-  border-style:dotted;
+  border-style: dotted;
   font-family: "Raleway";
   font-weight: lighter;
 
@@ -46,6 +51,7 @@ button {
 
   transition: all 0.3s ease-out;
 }
+
 button:hover {
   border-bottom-color: white;
 }
@@ -57,40 +63,69 @@ button:hover {
 }
 
 
-
-
-#auto-stop {
-  height: 24px;
-  width: 24px;
-  filter: saturate(0%) contrast(70%);
-
-  transition: all 0.3s ease-out;
+label {
+  opacity: 65%;
 }
-#auto-stop-label {
-  height: 14px;
-}
-
 
 #option {
   position: absolute;
   bottom: 30px;
   left: 30px;
+
 }
+
+#option input {
+  filter: saturate(0%) contrast(70%);
+}
+
+#volume-option-div {
+  display: flex;
+  transition: all 0.3s ease-out;
+}
+
 #volume-bar {
   height: 30px;
   margin-top: 0px;
   width: 170px;
   color: white;
 
-  filter: saturate(0%) contrast(70%);
+  transition: all 0.1s ease-out;
 }
+
 #volume-bar-label {
-  float:right;
+  float: right;
+
+  transition: all 0.1s ease-out;
 }
 
+#mute {
+  -ms-transform: scale(0, 0);
+  -webkit-transform: scale(0, 0);
+  transform: scale(0, 0);
+}
 
-label {
-  color: #ffffffa3;
+#mute:checked+#mute-label {
+  opacity: 100%;
+}
+
+#mute-icon {
+  transition: all 0.2s ease-out;
+}
+
+#auto-stop {
+  -ms-transform: scale(2, 2);
+  -webkit-transform: scale(2, 2);
+  transform: scale(2, 2);
+  border-width: 0px;
+
+  transition: all 0.3s ease-out;
+}
+
+#auto-stop-label {
+  height: 14px;
+  padding-left: 3px;
+
+  transition: all 0.3s ease-out;
 }
 
 
@@ -122,9 +157,10 @@ label {
   margin-right: 30px;
   transition: all 0.3s ease-out;
 }
+
 #reset:hover {
-  color:rgb(255, 157, 157);
-  border-bottom-color:rgb(255, 157, 157);
+  color: rgb(255, 157, 157);
+  border-bottom-color: rgb(255, 157, 157);
 }
 
 
@@ -147,6 +183,7 @@ label {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
 #input-field input {
   background-color: transparent;
   color: white;
@@ -165,14 +202,18 @@ label {
   border: none;
   transition: all 1s ease-out;
 }
-input::-webkit-inner-spin-button, input::-webkit-outer-spin-button {
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
   display: none;
 }
+
 input:focus {
   outline: none;
   text-decoration: none;
   caret-color: rgba(255, 255, 255, 0.8);
 }
+
 .input-colon {
   font-size: 150px;
   font-family: 'Raleway';
@@ -180,6 +221,7 @@ input:focus {
   margin-top: auto;
   transition: all 1s ease-out;
 }
+
 #input-field-guide {
   position: absolute;
   left: 50%;
@@ -204,6 +246,7 @@ input:focus {
   transition: all 1s ease-out;
   filter: invert(0%);
 }
+
 .colon {
   transition: all 0.8s ease-out;
 }
@@ -235,6 +278,7 @@ input:focus {
 
   transition: all 0.2s ease-in-out;
 }
+
 #copyright:hover {
   color: aqua;
   opacity: 100%;
@@ -250,31 +294,56 @@ input:focus {
     flex-wrap: wrap;
   }
 
-  #time, #input-field input {
+  #time,
+  #input-field input {
     font-size: 100px;
   }
+
   #input-field input {
     width: 180px;
     overflow: hidden;
   }
-  #input-field .input-colon{
+
+  #input-field .input-colon {
     font-size: 100px;
     transform: translateY(31px);
   }
 
   #timer-menu {
-    transform: translate(-50%, -36px);
+    transform: translate(-50%, -48px);
   }
+
   #timer-menu button {
     font-size: 35px;
   }
 
   #time-bar {
-    transform: translate(-50%, -30px);
+    transform: translate(-50%, -32px);
   }
 
+
   #auto-stop {
-  height: 30px;
-  width: 30px;
+    -ms-transform: scale(2.7, 2.7);
+    -webkit-transform: scale(2.7, 2.7);
+    transform: scale(2.7, 2.7);
+  }
+
+  #auto-stop-label {
+    padding-left: 8px;
+  }
+
+  #volume-option-div {
+    margin-top: 15px;
+  }
+
+  #mute-icon {
+    height: 28px;
+    width: 28px;
+    transform: translate(0, -8px);
+  }
+
+
+  #copyright {
+    bottom: 0px;
   }
 }

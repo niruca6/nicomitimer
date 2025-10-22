@@ -19,6 +19,8 @@ const timerEl = {
   startButton: document.getElementById("start"),
 
   autoStopCheckbox: document.getElementById("auto-stop"),
+  muteCheckbox: document.getElementById("mute"),
+  muteIcon: document.getElementById("mute-icon"),
   volumeBar: document.getElementById("volume-bar"),
   volumeBarLabel: document.getElementById("volume-bar-label")
 }
@@ -53,13 +55,16 @@ let tst = {
 document.body.addEventListener(
   "keydown",
   (ev) => {
-    if ((getRemainingSeconds() < 1) && (tst.isActivated)) reset();
+    if ((getRemainingSeconds() < 1) && (tst.isActivated)) {
+      reset();
+      return;
+    };
     if ((tst.isAllowShortcutkey) && (tst.endTime == undefined) && (ev.code == "Enter")) startWithInput();
 
     //一時停止/再開[Space]
     if (ev.code == "Space") {
       console.log("Space");
-      if ((!tst.isAllowShortcutkey) && (tst.isActivated)) { pause(); }
+      if ((tst.isActivated) && (!tst.isAllowShortcutkey)) { pause(); }
       else if ((!tst.isActivated) && (tst.endTime)) { resume(); }
     };
 
@@ -68,16 +73,25 @@ document.body.addEventListener(
       timerInputEl.minutes.value = null;
       timerInputEl.seconds.value = null;
     };
+
+    //ミュート[M]
+    if (ev.code == "KeyM") {
+      if (timerEl.muteCheckbox.checked) {
+        timerEl.muteCheckbox.checked = false;
+      } else {
+        timerEl.muteCheckbox.checked = true;
+      }
+      asyncMute()
+    }
   },
   { once: false }
 );
 
 
 
-window.onload = () => {hideGuide();}
+window.onload = () => { hideGuide(); }
 
 setInterval(setVolume, 30);
-setInterval(setAutoStopMode, 30);
 setInterval(() => { windouWidth = window.innerWidth }, 60);
 
 
@@ -88,6 +102,12 @@ worker.onmessage = (ev) => {
   if (remainingSeconds > 0) {
     updateClockDisplay(remainingSeconds);
     tst.beforeRemainingSeconds = remainingSeconds;
+
+    if (remainingSeconds == 1) {
+      asyncAutoStopMode();
+      asyncMute();
+    }
+
     return; //残り時間が1秒以上ならここで終了
 
   } else {
@@ -157,7 +177,7 @@ function playAlarm() {
     timerEl.title.textContent = "■■■■■■■■■■■■■■■";
     tabIcon.href = "icons/icon_magenta.ico";
 
-    alarm.play();
+    if (!timerEl.muteCheckbox.checked) alarm.play();
     if (tst.isAutoStopEnabled) reset();
 
   } else {
@@ -215,6 +235,9 @@ function start(timeLeft) {
   timerEl.startButton.style.display = "none";
   timerEl.pauseButton.style.display = "inline-block";
 
+  asyncAutoStopMode();
+  asyncMute();
+
   console.log("[" + getRealTimeStr() + "] started\nlength: " + (getRemainingSeconds()));
 }
 
@@ -267,7 +290,7 @@ function resume() {
 
   setTimeout(() => {
     updateClockDisplay(getRemainingSeconds());
-  }, getRemainingSeconds(true)%1000 +10);
+  }, getRemainingSeconds(true) % 1000 + 10);
 
   const remainingSeconds = getRemainingSeconds();
   const minutesStr = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
@@ -278,6 +301,10 @@ function resume() {
   timerEl.resetButton.style.display = "none";
   timerEl.pauseButton.style.display = "inline-block";
   timerEl.title.textContent = (minutesStr + ":" + secondsStr + " Left");
+
+
+  asyncAutoStopMode();
+  asyncMute();
 
 }
 
@@ -323,13 +350,18 @@ function reset() {
 }
 
 
-//自動でタイマーを止める を切り替える
-function setAutoStopMode() {
-  if (timerEl.autoStopCheckbox.checked) {
-    tst.isAutoStopEnabled = true;
-  } else {
-    tst.isAutoStopEnabled = false;
-  }
+function asyncAutoStopMode() {
+
+  setTimeout(() => {
+
+    if (timerEl.autoStopCheckbox.checked) {
+      tst.isAutoStopEnabled = true;
+    } else {
+      tst.isAutoStopEnabled = false;
+    }
+
+  }, 30);
+
 }
 
 
@@ -338,7 +370,32 @@ function setAutoStopMode() {
 function setVolume() {
   const volume = timerEl.volumeBar.value;
   timerEl.volumeBarLabel.textContent = ("Volume: " + volume + "%");
-  alarm.volume = volume * 0.01;
+
+  if (timerEl.muteCheckbox.checked) {
+    alarm.volume = 0;
+  } else {
+    alarm.volume = volume * 0.01;
+  }
+}
+
+
+function asyncMute() {
+
+  setTimeout(() => {
+
+    if (timerEl.muteCheckbox.checked) {
+      timerEl.volumeBar.style.opacity = "20%";
+      timerEl.volumeBarLabel.style.opacity = "20%";
+      timerEl.muteIcon.src = "img/muted.png"
+      timerEl.muteIcon.alt = "Muted";
+    } else {
+      timerEl.volumeBar.style.opacity = "100%";
+      timerEl.volumeBarLabel.style.opacity = "65%";
+      timerEl.muteIcon.src = "img/unmuted.png";
+      timerEl.muteIcon.alt = "Unmuted";
+    }
+
+  }, 30);
 }
 
 
@@ -366,10 +423,10 @@ function hideGuide() {
  * @returns {number}
  */
 function getRemainingSeconds(includeMilliseconds) {
-  if(includeMilliseconds) {
-    return Math.floor((tst.endTime - (Date.now())) / 1000)+(((tst.endTime - (Date.now())) % 1000) *0.0001);
+  if (includeMilliseconds) {
+    return Math.floor((tst.endTime - (Date.now())) / 1000) + (((tst.endTime - (Date.now())) % 1000) * 0.0001);
   } else {
-  return Math.floor((tst.endTime - (Date.now())) / 1000);
+    return Math.floor((tst.endTime - (Date.now())) / 1000);
   }
 }
 
@@ -383,6 +440,6 @@ function getRealTimeStr(includeMilliseconds) {
   const hoursStr = String(Math.floor(realTime.getHours())).padStart(2, '0');
   const minutesStr = String(Math.floor(realTime.getMinutes())).padStart(2, '0');
   const secondsStr = String(realTime.getSeconds()).padStart(2, '0');
-  if (includeMilliseconds) {return (hoursStr + ":" + minutesStr + ":" + secondsStr+"."+realTime.getMilliseconds());}
-  else {return (hoursStr + ":" + minutesStr + ":" + secondsStr);}
+  if (includeMilliseconds) { return (hoursStr + ":" + minutesStr + ":" + secondsStr + "." + realTime.getMilliseconds()); }
+  else { return (hoursStr + ":" + minutesStr + ":" + secondsStr); }
 }
