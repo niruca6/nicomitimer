@@ -3,7 +3,9 @@ const tabIcon = document.getElementById("icon");
 const alarm = new Audio("assets/audio/alarm.m4a");
 alarm.volume = 1;
 const worker = new Worker("./webWorker.js");
+
 let windouWidth = window.innerWidth;
+let windowHeight = window.innerHeight;
 
 const timerEl = {
   title: document.getElementById("title"),
@@ -92,7 +94,7 @@ document.body.addEventListener(
 window.onload = () => { hideGuide(); }
 
 setInterval(setVolume, 30);
-setInterval(() => { windouWidth = window.innerWidth }, 60);
+setInterval(() => { windouWidth = window.innerWidth; windowHeight = window.innerHeight; }, 1000);
 
 
 
@@ -151,7 +153,7 @@ function updateClockDisplay(remainingSeconds) {
   }
 
   timerEl.bar.style.width = (((Math.floor(getRemainingSeconds())) / tst.maxSeconds) * 500) + "px";
-  if (windouWidth < 769) timerEl.bar.style.width = (((Math.floor(getRemainingSeconds())) / tst.maxSeconds) * 300) + "px";
+  if ((windouWidth < 769) || (windowHeight < 481)) timerEl.bar.style.width = (((Math.floor(getRemainingSeconds())) / tst.maxSeconds) * 300) + "px";
 
   const colon = document.getElementById("colon");
 
@@ -220,12 +222,12 @@ function start(timeLeft) {
 
   timerEl.clock.textContent = minutesStr + ":" + secondsStr;
   timerEl.title.textContent = minutesStr + ":" + secondsStr + " Left";
-  timerEl.bar.style.width = (windouWidth < 769) ? (300 + "px") : (500 + "px");
+  timerEl.bar.style.width = ((windouWidth < 769) || (windowHeight < 481)) ? (300 + "px") : (500 + "px");
   timerEl.clock.style.display = "flex";
   timerInputEl.field.style.display = "none";
 
   for (let i = 0; i < timerEl.quickStartButtons.length; i++) {
-    timerEl.quickStartButtons[i].style.color = "transparent";
+    timerEl.quickStartButtons[i].style.opacity = "0%";
     timerEl.quickStartButtons[i].style.filter = "blur(10px)";
   }
   setTimeout(() => {
@@ -326,7 +328,7 @@ function reset() {
   tabIcon.href = "icon.ico";
 
   for (let i = 0; i < timerEl.quickStartButtons.length; i++) {
-    timerEl.quickStartButtons[i].style.color = "white";
+    timerEl.quickStartButtons[i].style.opacity = "100%";
     timerEl.quickStartButtons[i].style.filter = "blur(0px)";
   }
   timerEl.clock.style.display = "none";
