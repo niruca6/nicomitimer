@@ -426,7 +426,7 @@ input:focus {
     transform: translateY(11px);
   }
   #input-field-guide {
-    transform: translateX(-50%) translateY(-130px);
+    transform: translateX(-50%) translateY(-100px);
   }
 
   #timer-menu {
