@@ -125,16 +125,19 @@ label {
   border-bottom-color: white;
 }
 
-#auto-stop {
+
+#auto-stop, #stay-awake {
   -ms-transform: scale(2, 2);
   -webkit-transform: scale(2, 2);
   transform: scale(2, 2);
   border-width: 0px;
 
+  margin-top: 14px;
+
   transition: all 0.3s ease-out;
 }
 
-#auto-stop-label {
+#auto-stop-label, #stay-awake-label {
   height: 14px;
   padding-left: 3px;
 
@@ -353,6 +356,11 @@ input:focus {
   }
   
 
+  #volume-bar, #volume-bar-label {
+    opacity: 20%;
+  }
+
+
   #time,
   #input-field input {
     font-size: 100px;
@@ -382,13 +390,11 @@ input:focus {
   }
 
 
-  #auto-stop {
-    -ms-transform: scale(2.3, 2.3);
-    -webkit-transform: scale(2.3, 2.3);
-    transform: scale(2.3, 2.3);
+  #auto-stop, #stay-awake {
+    margin-top: 20px;
   }
 
-  #auto-stop-label {
+  #auto-stop-label, #stay-awake-label {
     padding-left: 8px;
   }
 
@@ -413,13 +419,14 @@ input:focus {
     transform: translate(-50%, calc(-135% - 20px));
   }
 
-  #input-field input {
-    transform: translateY(-20px);
-  }
-
   #input-field:has(input:focus) #minutes,
   #input-field:has(input:focus) #seconds  {
   font-size: 60px;
+}
+
+  #input-field #minutes,
+  #input-field #seconds  {
+  transform: translateY(-20px);
 }
 
   #input-field .input-colon {

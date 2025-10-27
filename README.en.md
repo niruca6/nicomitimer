@@ -20,6 +20,7 @@ Click [❙ ❙] to pause, [▶︎] to resume, and [✖︎] to cancel the timer.
 ### 2-2. Preferences
 - Volume: Adjusts the volume of alarm. Please DON'T set the volume above 20%. The too loud sounds may damage your hearing.
 - Auto-stop timer: Stop the timer automatically when it finishes. The alarm will ring only once.
+- Stay awake: Prevents the screen from turning off automatically.
 - (🔔Bell icon): Toggles mute. A bell with a slash means the alarm is muted.
 
 ### 2-3. Key Controls

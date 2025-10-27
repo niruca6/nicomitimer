@@ -18,7 +18,9 @@
 
 <body id="body">
   <!--バージョンとコピーライト-->
-  <a id="copyright" href="https://github.com/niruca6/NicomiTimer" target="_blank" rel="noopener noreferrer">🔗 GUIDE | v1.1.0 | © 2025 Niruca, MIT License</a>
+  <a id="copyright" href="https://github.com/niruca6/NicomiTimer" target="_blank" rel="noopener noreferrer">
+    🔗 GUIDE | v1.1.1 | © 2025 Niruca, MIT License
+  </a>
 
 
   <!--時間-->
@@ -49,6 +51,11 @@
 
   <!--オプション-->
   <div id="option">
+    <input type="checkbox" id="stay-awake" name="stay-awake" onclick="asyncStayAwake();">
+    <label for="stay-awake" id="stay-awake-label">Stay awake</label>
+
+    <br>
+    
     <input type="checkbox" id="auto-stop" name="auto-stop" onclick="asyncAutoStopMode();">
     <label for="auto-stop" id="auto-stop-label">Auto-stop timer</label>
 
@@ -79,7 +86,9 @@
   --><button type=“button” onclick="startWithInput()" id="start">▶︎</button>
   </div>
 
+
   <script src="main.js"></script>
+  <script src="wakeLock.js"></script>
 </body>
 
 </html>
