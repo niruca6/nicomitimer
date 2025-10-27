@@ -1,5 +1,5 @@
 # NicomiTimer
-バージョン: 1.1.0  
+バージョン: 1.1.1  
 ©︎ 2025 煮るか(Niruca), MIT License  
 音源: 効果音ラボ  
   

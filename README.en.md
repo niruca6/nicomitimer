@@ -1,5 +1,5 @@
 # NicomiTimer
-version: 1.1.0  
+version: 1.1.1  
 ©︎ 2025 煮るか(Niruca), MIT License  
 Sound Effect: Sound Effect Lab
 
