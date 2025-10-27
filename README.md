@@ -5,7 +5,13 @@
   
   
 -------------------------------
-The English version is here: ([README.en.md](https://github.com/niruca6/nicomitimer/blob/main/README.en.md))
+The English version is here: ([README.en.md](https://github.com/niruca6/nicomitimer/blob/main/README.en.md))  
+  
+
+## !注意!
+現在スマホなどの一部のデバイスでVolumeを変更してもタイマーの音量が変わらない問題が発生しています。ミュートは正常に動作しています。ご迷惑をおかけします。修正までしばらくお待ちください。  
+  
+
 ## 1.概要
 「世界一使いやすい」をコンセプトにしたWebタイマーです。  
   

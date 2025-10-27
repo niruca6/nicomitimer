@@ -6,9 +6,13 @@ Sound Effect: Sound Effect Lab
 
 
 -------------------------------
+## !CAUTION!
+Currently, the volume control does not work properly on some devices, such as smartphones. The mute function works properly. Sorry for the inconvenience. A fix is on the way.
+  
+
 ## 1.About this website
 This is a Web timer based on the concept of being "the easiest to use."
-
+  
 
 
 ## 2.How to use
@@ -18,7 +22,7 @@ The gray text in the center is the input field. Enter the time you want here and
 Click [❙ ❙] to pause, [▶︎] to resume, and [✖︎] to cancel the timer.
 
 ### 2-2. Preferences
-- Volume: Adjusts the volume of alarm. Please DON'T set the volume above 20%. The too loud sounds may damage your hearing.
+- Volume: Adjusts the volume of alarm. Please do not set the volume above 20%. The too loud sounds may damage your hearing.
 - Auto-stop timer: Stop the timer automatically when it finishes. The alarm will ring only once.
 - Stay awake: Prevents the screen from turning off automatically.
 - (🔔Bell icon): Toggles mute. A bell with a slash means the alarm is muted.
